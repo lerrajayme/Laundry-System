@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    padding: 10px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    backdrop-filter: blur(30px)
+}
+
+.navbar .logo {
+    width: 70px;
+    height: auto;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* NEW: Make logo section a clickable link */
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  gap: 20px;
+}
+
+.logo-link:hover {
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.navbar .logoImg {
+    width: 50px;
+    height: 50px;
+}
+
+
+.navbar .logoText {
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+  text-shadow: 2px 2px 15px #000;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    text-shadow: 2px 2px 15px #000;
+    
+}
+
+.navbar ul li {
+    position: relative;
+    margin-left: 100px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500px;
+    
+}
+
+.navbar ul li:not(:has(button))::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    border-radius: 5px;
+    background: white;
+    transform: scaleX(0);   
+    transition: transform .5s;
+}
+
+.navbar ul li:hover::after {
+    transform: scaleX(1);
+}
+
+.navbar ul li a {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.navbar ul button {
+    width: 120px;
+    height: 45px;
+    background: transparent;
+    border: 2px solid white;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    font-weight: 500;
+    margin-left: 30px;
+    transition: 0.5s;
+    text-shadow: 2px 2px 15px #000;
+}
+
+.navbar ul button:hover {
+    background: white;
+    color: #006071;
+
+}

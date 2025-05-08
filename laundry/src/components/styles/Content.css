@@ -1,0 +1,46 @@
+.content {
+    position: relative;
+    display: flex;
+    align-items: left;
+    min-height: 60vh; /* changed from 100vh */
+    padding: 50px 100px 0;
+    color: white;
+    transform: translateY(300px); /* simplified */
+    z-index: 1; /* lower than login modal */
+    width: 100%;
+    pointer-events: none; /* makes it non-interactive */
+    bottom: 200px;
+}
+
+.info h1 {
+    font-size: 75px;
+    max-height: 339px;
+    text-transform: uppercase;
+    font-weight: 700px;
+    text-shadow: 2px 2px 15px #000;
+    max-width: 850px;
+    margin-left: -600px;
+    text-align: left;
+}
+
+.info p {
+    margin-left: -600px;
+    font-size: 25px;
+    margin-top: 0px;
+    max-height: 339px;
+    max-width: 850px;
+    line-height: 150%;
+    text-shadow: 2px 2px 15px #000;
+    color: white;
+}
+
+.info .location {
+    margin-left: -600px;
+    max-height: 339px;
+    font-size: 25px;
+    margin-top: 25px;
+    max-width: 850px;
+    line-height: 150%;
+    text-shadow: 2px 2px 15px #000;
+    color: white;
+}
