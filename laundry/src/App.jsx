@@ -19,6 +19,7 @@ import OrderHistory from './components/OrderHistory';
 import FeedbackRatings from './components/FeedbackRatings';
 import BookService from './components/BookService';
 import LaundryShopDetails from './components/LaundryShopDetails';
+import CustomerLogout from './components/CustomerLogout';
 import './App.css';
 
 
@@ -33,7 +34,7 @@ function AppWrapper() {
 
     // Hide Navbar for dashboard routes
     const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/feedback', '/book-service',
-      '/laundry-details'
+      '/laundry-details', '/customerlogout'
     ];
     const showNavbar = !hideNavbarOn.includes(location.pathname);
     
@@ -65,6 +66,7 @@ function AppWrapper() {
           <Route path="/feedback" element={<FeedbackRatings />} />
           <Route path="/book-service" element={<BookService />} />
           <Route path="/laundry-details" element={<LaundryShopDetails />} />
+          <Route path="/customerlogout" element={<CustomerLogout />} />
           <Route path="/faqs" element={<FAQs />} />
 
         </Routes>

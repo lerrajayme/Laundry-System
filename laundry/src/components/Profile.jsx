@@ -66,7 +66,7 @@ const Profile = () => {
       </Link>
     
       <div className="logout">
-        <Link to="/logout">
+        <Link to="/customerlogout">
           <button className="logout-btn">
             <FiLogOut className='side-icon' /> Logout
           </button>

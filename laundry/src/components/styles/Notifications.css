@@ -231,15 +231,16 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding: 0 20px;
   }
   
   /* Each Notification Box */
   .notification-box {
     display: flex;
     align-items: flex-start;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.4);
     border: 1px solid #ccc;
-    border-radius: 12px;
+    border-radius: 20px;
     padding: 15px;
     gap: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -262,6 +263,7 @@
     align-items: center;
     justify-content: center;
     min-width: 40px;
+    margin-top: 10px;
   }
   
   /* Content Section */

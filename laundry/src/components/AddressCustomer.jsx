@@ -89,7 +89,7 @@ const AddressCustomer = () => {
         </Link>
 
         <div className="logout">
-          <Link to="/">
+          <Link to="/customerlogout">
             <button className="logout-btn">
               <FiLogOut className='side-icon' /> Logout
             </button>

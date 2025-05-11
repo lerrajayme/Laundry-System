@@ -12,17 +12,28 @@ const OrderHistory = () => {
 
   // Fetch orders from backend
   useEffect(() => {
-    // Replace with your API URL to fetch the orders for the logged-in user
-    fetch('/api/orders')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.orders) {
-          setOrders(data.orders); // Set the orders data
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching orders:', error);
-      });
+    const sampleOrders = [
+      {
+        id: 'SO-00007007',
+        date: '3/25/2025',
+        name: 'Juan Dela Cruz',
+        total: 350.00,
+      },
+      {
+        id: 'SO-00007006',
+        date: '3/20/2025',
+        name: 'Juan Dela Cruz',
+        total: 620.50,
+      },
+      {
+        id: 'S0-00007005',
+        date: '3/10/2025',
+        name: 'Juan Dela Cruz',
+        total: 410.25,
+      }
+    ];
+
+    setOrders(sampleOrders);
   }, []);
 
   return (
@@ -72,7 +83,7 @@ const OrderHistory = () => {
         </Link>
 
         <div className="logout">
-          <Link to="/">
+          <Link to="/customerlogout">
             <button className="logout-btn">
               <FiLogOut className='side-icon' /> Logout
             </button>

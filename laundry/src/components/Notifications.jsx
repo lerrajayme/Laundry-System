@@ -10,9 +10,36 @@ import './styles/Notifications.css';
 const NotificationsPage = () => {
   const [activeTab, setActiveTab] = useState('today');
 
-  const todayNotifications = [];
+  const todayNotifications = [
+    {
+      icon: <FaBell className="notif-bell" />,
+      title: 'Booking Confirmed',
+      message: 'Your laundry booking for May 11, 2025 has been confirmed! We’ll pick up your clothes between 9:00 AM - 11:00 AM.',
+    },
+    {
+      icon: <FaBell className="notif-bell" />,
+      title: 'Reminder Before Pickup',
+      message: 'Your laundry pickup is scheduled for May 11, 2025 between 9:00 AM - 11:00 AM. Please keep your clothes ready!',
+    },
+  ];
 
-  const previousNotifications = [];
+  const previousNotifications = [
+    {
+      icon: <FaBell className="notif-bell" />,
+    title: 'Laundry Pickup',
+    message: 'Great news! Your laundry has been picked up and is on its way to our facility. Expected delivery: May 12, 2025.',
+  },
+  {
+    icon: <FaBell className="notif-bell" />,
+    title: 'Out for Delivery',
+    message: 'Your freshly cleaned laundry is on its way! Expected delivery time: 3:00 PM - 5:00 PM.',
+  },
+  {
+    icon: <FaBell className="notif-bell" />,
+    title: 'Delivery Completed',
+    message: 'Your laundry has been delivered! Hope everything looks perfect.',
+    },
+  ];
 
   const renderNotifications = (list) =>
     list.map((item, index) => (
@@ -72,7 +99,7 @@ const NotificationsPage = () => {
        </Link>
      
        <div className="logout">
-         <Link to="/">
+         <Link to="/customerlogout">
            <button className="logout-btn">
              <FiLogOut className='side-icon' /> Logout
            </button>
