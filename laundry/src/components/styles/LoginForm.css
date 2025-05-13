@@ -1,0 +1,207 @@
+.login-wrapper {
+    width: 450px;
+    height: 500px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    backdrop-filter: blur(30px);
+    border-radius: 20px !important;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    padding: 50px 40px;
+    color: white;
+    position: fixed;
+    right: 3.5%;
+    top: 21%;
+    align-items: center;
+    overflow: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.login-wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+    line-height: 1;
+    text-shadow: 3px 3px #006071;
+}
+
+.login-wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    margin: 30px 0;
+}
+.login-wrapper .icon-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: #006071;
+    font-size: 40px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, .2) !important; 
+    outline: none; 
+    border-radius: 20px !important;
+    padding: 0px 45px 0px 20px;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+}
+
+.input-box input::placeholder {
+    color: white;
+}
+
+.role {
+    position: relative;
+    width: 100%;
+    margin: 30px 0;
+  }
+  
+  .role-select {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, 0.2) !important;
+    border-radius: 20px !important;
+    padding: 0 40px 0 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  
+  .role-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(209, 209, 209, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px !important;
+    margin-top: 5px;
+    backdrop-filter: blur(6px);
+    z-index: 99;
+    overflow: hidden;
+  }
+  
+  .role-options li {
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .role-options li:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
+  .dropdown-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px !important;
+    color: #006071;
+    pointer-events: none;
+  }
+  
+  
+.input-box .icon {
+    position: absolute;
+    right: 10px !important;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px !important;
+    color: #006071;
+    cursor: pointer;
+}
+
+.login-wrapper .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+    font-weight: 600;
+}
+
+.login-wrapper .remember-forgot label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  } 
+  
+.login-wrapper .remember-forgot label input{
+    width: 16px;
+    height: 16px;
+    accent-color: #006071;
+  }
+  
+
+.remember-forgot a {
+    color: #006071;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.login-wrapper button {
+    width: 100%;
+    height: 50px  !important;
+    background: white;
+    border: none;
+    outline: none;
+    border-radius: 20px !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #006071;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-weight: 700;
+}
+
+.login-wrapper .register {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    margin: 20px 0 15px;
+}
+
+.register p {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register a {
+    color: #006071;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register a:hover {
+    text-decoration: underline;
+}

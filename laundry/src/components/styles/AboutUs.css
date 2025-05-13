@@ -1,0 +1,89 @@
+/* Wrapper for the entire about page */
+.about-page{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+  
+.about-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Styling for the About Us title */
+  .about-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: -25px; /* Smaller gap */
+    padding-top: 0px;
+  }
+  
+  .about-title .about {
+    font-size: 100px;
+    font-weight: bold;
+    color: white;
+    -webkit-text-stroke: 3px #006071; 
+    text-shadow: 2px 2px 15px #000;
+    margin-top: 80px;
+  }
+  
+  /* Container */
+  .about-us-container {
+    width: 1450px;
+    height: auto; /* Allow content to grow */
+    border-radius: 10px;
+    padding: 20px;
+    backdrop-filter: blur(30px);
+    color: white;
+    font-family: Arial, sans-serif;
+    text-shadow: 2px 2px 15px #000;
+  }
+  
+  
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.about-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30px;
+}
+  
+.about-section > div {
+    width: 45%;
+}
+  
+.core-values p {
+    margin-bottom: 10px;
+}
+  
+.contact-us {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+/* New CSS to align icon and text in the contact section */
+.contact-us p {
+  display: flex;
+  align-items: center; /* Align the icon and text vertically */
+  margin-bottom: 10px;
+}
+
+.contact-us p svg {
+  margin-right: 10px; /* Adds space between the icon and text */
+  font-size: 20px; /* Adjust the icon size if necessary */
+}
+
+.contact-us h3 {
+  font-size: 25px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}

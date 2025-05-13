@@ -1,0 +1,281 @@
+/* Overall layout */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background:transparent;
+  }
+  
+  /* Navbar at the top */
+  .navbar-customer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .navbar-customer .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between logo and text */
+  }
+  
+  .navbar-customer .logoImg {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .navbar-customer .logo {
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: 2px 2px 15px #000;
+  }
+  
+  .navbar-customer .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 150px;
+  }
+  
+  .navbar-customer .icon {
+    font-size: 32px;
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s ease-in-out;/* Smooth transition for shadow effect */
+  }
+  
+  .navbar-customer .icon:hover {
+    color: #006071; /* Stronger shadow on hover */
+  }
+  
+  
+  /* Sidebar on the left */
+  .sidebar {
+        width: 300px;
+        height: 80%; /* Set height to 80% of the viewport height */
+        backdrop-filter: blur(30px);
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content vertically */
+        gap: 20px;
+        color: white;
+        position: fixed;
+        top: 15%; /* Start from 10% of the viewport height */
+        left: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top: 2px solid white;  /* Top border */
+        border-bottom: 2px solid white; 
+        border-right: 2px solid white;
+  }
+  
+  .sidebar button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    align-items: center;     /* center icon + text vertically */
+    gap: 20px; 
+    display: flex;
+    transition: background 0.3s;
+  }
+  
+  .sidebar .side-icon {
+    font-size: 24px; 
+  }
+  
+  .sidebar button:hover {
+    background-color: rgba(0, 96, 113, 0.4);
+  }
+  
+  /* Logout section at the bottom */
+  .sidebar .logout {
+    margin-top: auto;
+    padding-bottom: 30px;
+  }
+  
+  .logout .logout-btn {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .logout .logout-btn:hover {
+    background-color: rgba(0, 96, 113, 0.4);
+  }
+  
+  /* Main Content */
+  .main-notification {
+    margin-left: 300px; 
+    margin-top: 110px;
+    padding: 0 0 0 0;
+    height: 545px;
+    width: 1100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    border-radius: 20px;
+  }
+  
+  /* Profile Section Wrapper */
+  .main-notification .notification-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;  /* Aligns items to the left */
+    justify-content: flex-start;
+  }
+  
+    /* Profile Header */
+  .notification-header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+    box-sizing: border-box;
+    border-bottom: 2px solid white;
+  }
+  
+  .notification-header .back-button {
+    background: none  ;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 10px;
+    display: flex;
+    font-size: 38px;
+    color: #006071;
+    align-items: center;
+    margin-right: 10px; 
+  }
+  
+  .notification-header .notification-title {
+    font-size: 34px !important;
+    color: white !important;
+    font-weight: bold !important;
+    -webkit-text-stroke: transparent;
+    margin-top: 10px; 
+    text-shadow: 2px 2px 15px black;
+  }
+
+  /* Container for the whole notification section */
+.notification-container {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  /* Tabs for TODAY and PREVIOUS */
+  .notif-tabs {
+    display: flex;
+    justify-content: left; /* <-- important: center tabs */
+    align-items: center;
+    gap: 30px; /* wider spacing for the center line */
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    border-bottom: 2px solid #999;
+  }
+
+  .notif-tab {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 0;
+    color: white ;
+    position: relative;
+  }
+  
+  .notif-tab.active {
+    color: #006071;
+    border-bottom: 2px solid #006071;
+  }
+
+ .notif-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: #006071;
+        border-radius: 2px;
+      }
+  
+  /* Notification List Wrapper */
+  .notif-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 20px;
+  }
+  
+  /* Each Notification Box */
+  .notification-box {
+    display: flex;
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 15px;
+    gap: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .no-notifications {
+    text-align: center;
+    color: #006071;
+    font-style: italic;
+    font-size: 24px;
+    padding: 20px;
+    margin-top: 120px;
+  }
+  
+  /* Icon Section */
+  .notif-icon {
+    font-size: 28px;
+    color: #006071;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    margin-top: 10px;
+  }
+  
+  /* Content Section */
+  .notif-content h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .notif-content p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
