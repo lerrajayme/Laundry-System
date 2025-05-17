@@ -13,10 +13,10 @@ function PasswordResetSuccess() {
   return (
     <div className="prs-wrapper">
       <span className="close-icon" onClick={handleClose}>
-              <MdClose className="icon" />
+              <MdClose className="x" />
             </span>
       <div className="prs-content">
-        <IoMdCheckmarkCircleOutline className='svg'/>
+        <IoMdCheckmarkCircleOutline className='success-icon'/>
         <h2>Password Updated!</h2>
         <p>Your password has been changed successfully. Use your new password to log in.</p>
     </div>

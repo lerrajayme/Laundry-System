@@ -42,10 +42,14 @@ const ForgotPassword = () => {
     setInfoMessage("Check your email. New code was sent to your email address."); // ✅ change shown here
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <div className="fp-wrapper">
-      <span className="icon-close">
-        <MdClose className="icon" />
+      <span className="icon-close" onClick={handleClose}>
+        <MdClose className="x" />
       </span>
       <h1>Account Recovery</h1>
       <p>{infoMessage}</p>

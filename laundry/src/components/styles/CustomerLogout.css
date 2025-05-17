@@ -59,20 +59,16 @@
   }
 
   .confirm-btn:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-    color:#333;
-    border: 1px solid #006071;
+    background-color: rgba(0, 96, 113, 0.8);
   }
   
   .cancel-btn {
-    background-color: #006071;
-    color: white;
-    border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #333;
+    border: 1px solid #006071;
   }
 
   .cancel-btn:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-    color:#333;
-    border: 1px solid #006071;
+    background-color: rgba(255, 255, 255, 0.7);
   }
   

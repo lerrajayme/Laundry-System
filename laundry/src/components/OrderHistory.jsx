@@ -83,7 +83,7 @@ const OrderHistory = () => {
         </Link>
 
         <div className="logout">
-          <Link to="/customerlogout">
+          <Link to="/customer-logout">
             <button className="logout-btn">
               <FiLogOut className='side-icon' /> Logout
             </button>

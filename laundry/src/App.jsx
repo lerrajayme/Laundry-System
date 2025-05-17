@@ -20,6 +20,9 @@ import FeedbackRatings from './components/FeedbackRatings';
 import BookService from './components/BookService';
 import LaundryShopDetails from './components/LaundryShopDetails';
 import CustomerLogout from './components/CustomerLogout';
+import BookingForm from './components/BookingForm';
+import CustomerPayment from './components/CustomerPayment';
+import Subscription from './components/Subscription';
 import './App.css';
 
 
@@ -34,7 +37,7 @@ function AppWrapper() {
 
     // Hide Navbar for dashboard routes
     const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/feedback', '/book-service',
-      '/laundry-details', '/customerlogout'
+      '/laundry-details', '/customerlogout', '/booking-form', '/subscription', '/customer-payment'
     ];
     const showNavbar = !hideNavbarOn.includes(location.pathname);
     
@@ -49,25 +52,40 @@ function AppWrapper() {
       )}
       <div className="page-content">
         <Routes>
+
+          {/* Customer Sidebar & Navbar*/}
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/customer-support" element={<CustomerSupport />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/addresscustomer" element={<AddressCustomer />} />
+          <Route path="/order-history" element={<OrderHistory />} />
+          <Route path="/feedback" element={<FeedbackRatings />} />
+          <Route path="/customer-logout" element={<CustomerLogout />} />
+          <Route path="/customer" element={<CustomerDashboard />} />
+
+          {/* Authentication & Landing Page */}
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-code" element={<VerifyCode />} /> 
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
-          <Route path="/customer" element={<CustomerDashboard />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/customer-support" element={<CustomerSupport />} />
           <Route path="/about" element={<About />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/notifications" element={<Notifications/>} />
-          <Route path="/addresscustomer" element={<AddressCustomer />} />
-          <Route path="/order-history" element={<OrderHistory />} />
-          <Route path="/feedback" element={<FeedbackRatings />} />
+          <Route path="/faqs" element={<FAQs />} />
+         
+         {/* */}
+          
+          
+  
+          
+  
+
+          {/* Book Service Process */}
           <Route path="/book-service" element={<BookService />} />
           <Route path="/laundry-details" element={<LaundryShopDetails />} />
-          <Route path="/customerlogout" element={<CustomerLogout />} />
-          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/booking-form" element={<BookingForm />} />
+          <Route path="/customer-payment" element={<CustomerPayment />} />
+          <Route path="/subscription" element={<Subscription />} />
 
         </Routes>
       </div>

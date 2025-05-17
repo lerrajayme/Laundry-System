@@ -44,16 +44,20 @@ function ResetPassword() {
     setNewPassword(value);
 
     // Real-time validation
-    if (value.length < 8 || value.length > 20) {
+    if (!value) {
+      setNewPasswordError('');
+    } else if (value.length < 8 || value.length > 20) {
       setNewPasswordError('Your password must have: 8 - 20 characters.');
     } else {
       setNewPasswordError('');
     }
 
-    if (confirmPassword && value !== confirmPassword) {
-      setConfirmPasswordError('Passwords do not match. Try again.');
-    } else {
-      setConfirmPasswordError('');
+    if (confirmPassword) {
+      if (value !== confirmPassword) {
+        setConfirmPasswordError('Passwords do not match. Try again.');
+      } else {
+        setConfirmPasswordError('');
+      }
     }
   };
 
@@ -61,17 +65,23 @@ function ResetPassword() {
     const value = e.target.value;
     setConfirmPassword(value);
 
-    if (newPassword && value !== newPassword) {
+    if (!value) {
+      setConfirmPasswordError('');
+    } else if (newPassword && value !== newPassword) {
       setConfirmPasswordError('Passwords do not match. Try again.');
     } else {
       setConfirmPasswordError('');
     }
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <div className="rp-wrapper">
-      <span className="icon-close">
-        <MdClose className="icon" />
+      <span className="icon-close" onClick={handleClose}>
+        <MdClose className="x" />
       </span>
       <h1>Reset Password</h1>
       <p>Enter and confirm your new password below.</p>
@@ -88,10 +98,17 @@ function ResetPassword() {
             className={newPasswordError ? 'input-error' : ''}
           />
           {showPassword ? (
-            <FaEye className="icon" onClick={() => setShowPassword(false)} />
+          <FaEye
+            className={`icon ${newPasswordError ? 'input-error' : ''}`}
+            onClick={() => setShowPassword(false)}
+          />
           ) : (
-            <FaEyeSlash className="icon" onClick={() => setShowPassword(true)} />
+          <FaEyeSlash
+          className={`icon ${newPasswordError ? 'input-error' : ''}`}
+          onClick={() => setShowPassword(true)}
+          />
           )}
+
         </div>
         {newPasswordError && <p className="new-password-error">{newPasswordError}</p>}
 
@@ -106,10 +123,17 @@ function ResetPassword() {
             className={confirmPasswordError ? 'input-error' : ''}
           />
           {showConfirm ? (
-            <FaEye className="icon" onClick={() => setShowConfirm(false)} />
-          ) : (
-            <FaEyeSlash className="icon" onClick={() => setShowConfirm(true)} />
+          <FaEye
+             className={`icon ${confirmPasswordError ? 'input-error' : ''}`}
+             onClick={() => setShowConfirm(false)}
+            />
+         ) : (
+          <FaEyeSlash
+            className={`icon ${confirmPasswordError ? 'input-error' : ''}`}
+            onClick={() => setShowConfirm(true)}
+            />
           )}
+
         </div>
         {confirmPasswordError && <p className="confirm-password-error">{confirmPasswordError}</p>}
 

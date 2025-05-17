@@ -1,5 +1,5 @@
-.wrapper {
-    width: 450px;
+.wrapper-signup {
+    width: 480px;
     height: 600px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
@@ -17,14 +17,14 @@
 }
 
 /* Header (Sign Up Title) */
-.wrapper h1 {
+.wrapper-signup h1 {
     font-size: 36px;
     text-align: center;
     line-height: 1;
 }
 
 /* Input Box */
-.wrapper .input-box {
+.wrapper-signup .input-box {
     position: relative;
     width: 100%;
     height: 50px;
@@ -47,6 +47,10 @@
 
 .input-box input::placeholder {
     color: white;
+}
+
+.input-box input.input-error {
+  border-color: red;
 }
 
 /* Role (Dropdown) */
@@ -88,7 +92,7 @@
 }
 
 /* Close Button */
-.wrapper .icon-close {
+.wrapper-signup .icon-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -115,11 +119,12 @@
 }
 
 .tac {
-    text-align: center; /* Center align the text */
-    font-size: 14px; /* Set the font size */
+    text-align: left; /* Center align the text */
+    font-size: 16px; /* Set the font size */
     color: #ffffff; /* Set the text color */
     margin-top: 10px; /* Add some margin above the text */
     font-weight: 400; /* Set a normal font weight */
+    margin-left: 10px;
 }
 
 .tac p {
@@ -138,7 +143,7 @@
 
 
 /* Submit Button */
-.wrapper button {
+.wrapper-signup button {
     width: 100%;
     height: 50px;
     background: white;
@@ -147,7 +152,7 @@
     border-radius: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     cursor: pointer;
-    font-size: 16px;
+    font-size: 26px;
     color: #006071;
     font-weight: 700;
     margin-top: 10px;
@@ -157,10 +162,10 @@
 }
 
 /* Register Link */
-.wrapper .login {
+.wrapper-signup .login {
     display: flex;
     justify-content: center;
-    font-size: 14.5px;
+    font-size: 16px;
     margin: 10px 0 15px;
 }
 
@@ -178,3 +183,56 @@
 .login a:hover {
     text-decoration: underline;
 }
+
+/* Error message style for both inputs */
+.wrapper-signup .password-error,
+.wrapper-signup .confirm-password-error {
+  color: #ec3538;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 10px;
+  text-shadow: none;
+  position: relative;
+  bottom: 20px;
+  margin-bottom: -30px; /* aron duol lang sa sunod nga input */
+}
+
+/* Error handling */
+.wrapper-signup .input-box input.input-error {
+  border-color: #ec3538 !important;
+  color: #ec3538;
+}
+
+.wrapper-signup .input-box .icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  color: #006071;
+  cursor: pointer;
+}
+
+.wrapper-signup .input-box .icon.input-error {
+  color: #ec3538 !important;
+}
+
+.error-message {
+  color: #ec3538 !important;
+  font-size: 14px;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  text-align: left;
+  padding-left: 10px;
+  text-shadow: none;
+  position: absolute;
+  bottom: 50px;
+  
+}
+
+/* Optional: Icon styling when there's an error */
+.input-error {
+  border-color: #ec3538 !important;
+}
+

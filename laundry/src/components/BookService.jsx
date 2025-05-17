@@ -20,9 +20,7 @@ const laundryShops = [
     name: "Wash Tub Laundry Hub",
     address: "Osmena Ext, 9000",
   },
-  { name: "", address: "" },
-  { name: "", address: "" },
-  { name: "", address: "" },
+  
 ];
 
 const BookService = () => {
@@ -73,7 +71,7 @@ const BookService = () => {
   </Link>
 
   <div className="logout">
-    <Link to="/customerlogout">
+    <Link to="/customer-logout">
       <button className="logout-btn">
         <FiLogOut className='side-icon' /> Logout
       </button>

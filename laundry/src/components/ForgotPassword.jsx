@@ -7,6 +7,10 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();  // Initialize navigate
 
+  const handleClose = () => {
+    navigate('/');
+  };
+  
   // Handle form submit to trigger browser validation
   const handleContinue = (e) => {
     e.preventDefault(); // Prevent default behavior so you can validate
@@ -18,8 +22,8 @@ const ForgotPassword = () => {
 
   return (
     <div className="fp-wrapper">
-      <span className="icon-close">
-        <MdClose className="icon" />
+      <span className="icon-close" onClick={handleClose}>
+        <MdClose className="x" />
       </span>
       <h1>Account Recovery</h1>
       <p>Forgot your password? Let's get you back in.</p>

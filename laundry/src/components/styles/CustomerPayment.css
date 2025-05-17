@@ -1,0 +1,134 @@
+.main-book {
+  margin-left: 300px;
+  margin-top: 110px;
+  padding: 0;
+  width: 1100px;
+  height: 545;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.2);
+  border: 2px solid white;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+.book-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 2px solid white;
+}
+.book-title {
+  margin-left: 10px;
+  font-size: 34px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 15px black;
+}
+
+/* Main Payment Container */
+.payment-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  color: #006071;
+}
+
+/* Sections */
+.section {
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+}
+
+.section h2 {
+    text-shadow: 1px 1px 7px rgba(0,0,0,0.5);
+}
+
+/* Information Section (Upper Left) */
+.information-section {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Booking Section (Upper Right) */
+.booking-section {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Booking Total (Lower Left) */
+.booking-total {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Payment Section (Lower Right) */
+.payment-section {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Common Item Styles */
+.info-row, .price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.info-label, .price-label {
+  color: #006071;
+  
+}
+
+.info-value, .price-value {
+  color: #006071;
+  font-weight: bold;
+}
+
+/* Payment Options */
+.payment-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.payment-btn {
+  background-color: #006071;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1;
+}
+
+/* Total Section */
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.total-label {
+  font-weight: bold;
+  color:#006071;
+}
+
+.total-value {
+  font-weight: bold;
+  color: #006071;
+  font-size: 18px;
+}
+
