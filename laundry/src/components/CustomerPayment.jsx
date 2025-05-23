@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaBell, FaUserCircle, FaHeadset, FaAddressCard } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from 'react-icons/gi';
@@ -7,33 +7,34 @@ import { IoArrowBackCircle } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import './styles/CustomerPayment.css';
 
-const CustomerPayment = ({ bookingDetails }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    pickupDate: "",
-    pickupTime: ""
-  });
+const CustomerPayment = () => {
+  // Mock data with placeholders
+  const customerInfo = {
+    name: "Maria Santos",
+    email: "maria.santos@example.com",
+    phone: "09123456789",
+    address: "123 Main Street, Quezon City"
+  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const bookingInfo = {
+    pickupDate: "12/15/2023",
+    pickupTime: "10:00 AM",
+    services: [
+      { name: "Wash & Fold: ", price: 150 },
+      { name: "Subscription: ", price: 299 }
+    ]
   };
 
   const pricing = {
-    subtotal: bookingDetails?.subtotal || 500.00,
+    subtotal: bookingInfo.services.reduce((sum, service) => sum + service.price, 0),
     bookingFee: 10.00,
-    total: (bookingDetails?.subtotal || 500.00) + 10.00
+    total: 0
   };
+  pricing.total = pricing.subtotal + pricing.bookingFee;
 
   return (
     <div className="dashboard-container">
-      {/* Navbar remains the same */}
+      {/* Navbar - unchanged */}
       <div className="navbar-customer">
         <Link to="/customer" className="logo-container">
           <img src="https://cdn-icons-png.flaticon.com/512/4666/4666163.png" alt="Logo" className="logoImg" />
@@ -46,7 +47,7 @@ const CustomerPayment = ({ bookingDetails }) => {
         </div>
       </div>
 
-      {/* Sidebar remains the same */}
+      {/* Sidebar - unchanged */}
       <div className="sidebar">
         <Link to="/book-service"><button><VscCalendar className="side-icon" /> Book a Service</button></Link>
         <Link to="/addresscustomer"><button><FaAddressCard className="side-icon" /> Address Management</button></Link>
@@ -57,119 +58,114 @@ const CustomerPayment = ({ bookingDetails }) => {
         </div>
       </div>
 
-      {/* Main content area - simplified structure */}
+      {/* Main Content */}
       <div className="main-book">
         <div className="book-header">
           <Link to="/booking-form"><IoArrowBackCircle className="back-button" /></Link>
           <h1 className="book-title">CUSTOMER PAYMENT</h1>
         </div>
 
-        {/* Booking summary placed directly in main content */}
         <div className="payment-summary">
-          {/* Information Section */}
+          {/* Customer Information with Placeholders */}
           <div className="section">
-            <h2>Information</h2>
-            <div className="info-row">
-              <span className="info-label">Complete Name</span>
+            <h2>Customer Details</h2>
+            <div className="info-input-container">
+              <input 
+                type="text" 
+                value={customerInfo.name} 
+                readOnly
+                className="info-input"
+                placeholder="Complete Name"
+              />
+            </div>
+            <div className="info-input-container">
+              <input 
+                type="email" 
+                value={customerInfo.email} 
+                readOnly
+                className="info-input"
+                placeholder="Email Address"
+              />
+            </div>
+            <div className="info-input-container">
+              <input 
+                type="tel" 
+                value={customerInfo.phone} 
+                readOnly
+                className="info-input"
+                placeholder="Contact Number"
+              />
+            </div>
+            <div className="info-input-container">
+              <input 
+                type="text" 
+                value={customerInfo.address} 
+                readOnly
+                className="info-input"
+                placeholder="Delivery Address"
+              />
+            </div>
+          </div>
+
+          {/* Booking Information with Placeholders */}
+          <div className="section">
+            <h2>Booking Details</h2>
+            <div className="info-input-container">
               <input
                 type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Enter your full name"
+                value={bookingInfo.pickupDate}
+                readOnly
                 className="info-input"
+                placeholder="Pickup Date (MM/DD/YYYY)"
               />
             </div>
-            <div className="info-row">
-              <span className="info-label">Email Address</span>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="your.email@example.com"
-                className="info-input"
-              />
-            </div>
-            <div className="info-row">
-              <span className="info-label">Contact Number</span>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                placeholder="0912 345 6789"
-                className="info-input"
-              />
-            </div>
-            <div className="info-row">
-              <span className="info-label">Address</span>
+            <div className="info-input-container">
               <input
                 type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                placeholder="Street, City, Province"
+                value={bookingInfo.pickupTime}
+                readOnly
                 className="info-input"
+                placeholder="Pickup Time"
               />
             </div>
-          </div>
-
-          {/* Booking Section */}
-          <div className="section">
-            <h2>Booking</h2>
-            <div className="info-row">
-              <span className="info-label">Date of pick up</span>
-              <input
-                type="date"
-                name="pickupDate"
-                value={formData.pickupDate}
-                onChange={handleInputChange}
-                className="info-input"
-              />
-            </div>
-            <div className="info-row">
-              <span className="info-label">Select time for pick up</span>
-              <select
-                name="pickupTime"
-                value={formData.pickupTime}
-                onChange={handleInputChange}
-                className="info-input"
-              >
-                <option value="">Select time</option>
-                <option value="08:00 AM">08:00 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="12:00 PM">12:00 PM</option>
-                <option value="02:00 PM">02:00 PM</option>
-                <option value="04:00 PM">04:00 PM</option>
-              </select>
+            <div className="services-list">
+              {bookingInfo.services.map((service, index) => (
+                <div key={index} className="service-item">
+                  <span>{service.name}</span>
+                  <span>₱{service.price.toFixed(2)}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Rest of your sections remain the same */}
+          {/* Payment Summary - unchanged */}
           <div className="section">
-            <h2>Booking Total</h2>
+            <h2>Payment Summary</h2>
             <div className="price-row">
-              <span className="price-label">Subtotal</span>
-              <span className="price-value">₱ {pricing.subtotal.toFixed(2)}</span>
+              <span>Subtotal:</span>
+              <span>₱{pricing.subtotal.toFixed(2)}</span>
             </div>
             <div className="price-row">
-              <span className="price-label">Order and Booking Fee</span>
-              <span className="price-value">₱ {pricing.bookingFee.toFixed(2)}</span>
+              <span>Booking Fee:</span>
+              <span>₱{pricing.bookingFee.toFixed(2)}</span>
+            </div>
+            <div className="price-row">
+              <span>Total: </span>
+              <span>₱{pricing.total.toFixed(2)}</span>
             </div>
           </div>
 
-          <div className="section">
-            <h2>Order and Booking Payment</h2>
-            <div className="payment-options">
-              <button className="payment-btn">Cash</button>
-              <button className="payment-btn">Gcash</button>
-            </div>
-            <div className="total-section">
-              <span className="total-label">Total</span>
-              <span className="total-value">₱ {pricing.total.toFixed(2)}</span>
-            </div>
+         <div className="payment-options">
+          <h2>Choose a payment method</h2>
+          <div className="payment-buttons-container">
+            <Link to='/pay-with-cash'>
+            <button className="payment-cash">Pay with Cash</button>
+            </Link>
+            <Link to='/pay-with-gcash'>
+            <button className="payment-gcash">Pay with GCash</button>
+            </Link>
           </div>
+        </div>
         </div>
       </div>
     </div>

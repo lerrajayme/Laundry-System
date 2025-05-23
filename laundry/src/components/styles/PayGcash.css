@@ -1,0 +1,170 @@
+.main-book {
+  margin-left: 300px;
+  margin-top: 110px;
+  padding: 0;
+  width: 1100px;
+  height: 545;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.2);
+  border: 2px solid white;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+.book-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 2px solid white;
+}
+.book-title {
+  margin-left: 10px;
+  font-size: 34px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 15px black;
+}
+
+.booking-summary-container {
+  width: 800px !important;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  border-radius: 8px;
+  margin-top: 60px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 20px;
+}
+
+.payment-title {
+  color: #006071;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.booking-totals {
+  margin-bottom: 25px;
+}
+
+.booking-totals h2 {
+  color: #333;
+  font-size: 1.2rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 15px;
+}
+
+.price-row, .total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.total-row {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.place-order-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #006071;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.place-order-btn:hover {
+  background-color: #004d5a;
+}
+
+/* Add these new styles to your existing PayGcash.css */
+
+/* Payment Grid Container */
+.payment-grid-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 20px;
+
+}
+
+/* GCash QR Container */
+.gcash-qr-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-left: 50px;
+  border: 1px solid #e0e0e0;
+  
+}
+
+.qr-code-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.qr-code-image {
+  width: 250px;
+  height: 300px;
+  border: 1px solid #e0e0e0;
+
+  margin-bottom: 15px;
+}
+
+.gcash-instructions {
+  color: #006071;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.place-order {
+  width: 100%;
+  max-width: 250px;
+  padding: 2px;
+  background-color: #006071;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.place-order:hover {
+  background-color: #004d5a;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .payment-grid-container {
+    flex-direction: column;
+  }
+  
+  .booking-summary-container,
+  .gcash-qr-container {
+    width: 100% !important;
+    margin-bottom: 20px;
+  }
+}

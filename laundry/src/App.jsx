@@ -23,6 +23,12 @@ import CustomerLogout from './components/CustomerLogout';
 import BookingForm from './components/BookingForm';
 import CustomerPayment from './components/CustomerPayment';
 import Subscription from './components/Subscription';
+import PayCash from './components/PayCash';
+import PayGcash from './components/PayGcash';
+import AddNewAddress from './components/AddNewAddress';
+import OwnerDashboard from './components/OwnerHomePage';
+import OwnerProfile from './components/OwnerProfile';
+import OwnerNotification from './components/OwnerNotification';
 import './App.css';
 
 
@@ -37,7 +43,8 @@ function AppWrapper() {
 
     // Hide Navbar for dashboard routes
     const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/feedback', '/book-service',
-      '/laundry-details', '/customerlogout', '/booking-form', '/subscription', '/customer-payment'
+      '/laundry-details', '/customerlogout', '/booking-form', '/subscription', '/customer-payment', '/pay-with-cash', '/pay-with-gcash', 
+      '/new-address', '/owner', '/profile-owner', '/notification-owner',
     ];
     const showNavbar = !hideNavbarOn.includes(location.pathname);
     
@@ -58,6 +65,7 @@ function AppWrapper() {
           <Route path="/customer-support" element={<CustomerSupport />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/addresscustomer" element={<AddressCustomer />} />
+          <Route path="/new-address" element={<AddNewAddress />} />
           <Route path="/order-history" element={<OrderHistory />} />
           <Route path="/feedback" element={<FeedbackRatings />} />
           <Route path="/customer-logout" element={<CustomerLogout />} />
@@ -73,8 +81,10 @@ function AppWrapper() {
           <Route path="/about" element={<About />} />
           <Route path="/faqs" element={<FAQs />} />
          
-         {/* */}
-          
+         {/*Owner*/}
+         <Route path="/owner" element={<OwnerDashboard />} />
+         <Route path="/profile-owner" element={<OwnerProfile />} />
+         <Route path="/notification-owner" element={<OwnerNotification />} />
           
   
           
@@ -86,6 +96,8 @@ function AppWrapper() {
           <Route path="/booking-form" element={<BookingForm />} />
           <Route path="/customer-payment" element={<CustomerPayment />} />
           <Route path="/subscription" element={<Subscription />} />
+          <Route path="/pay-with-cash" element={<PayCash />} />
+          <Route path="/pay-with-gcash" element={<PayGcash />} />
 
         </Routes>
       </div>

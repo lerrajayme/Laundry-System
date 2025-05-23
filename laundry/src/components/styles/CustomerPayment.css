@@ -35,7 +35,7 @@
   grid-template-rows: auto auto;
   gap: 20px;
   max-width: 800px;
-  margin: 20px auto;
+  margin: 10px auto;
   font-family: Arial, sans-serif;
   color: #006071;
 }
@@ -51,6 +51,7 @@
 
 .section h2 {
     text-shadow: 1px 1px 7px rgba(0,0,0,0.5);
+    margin-top: -10px;
 }
 
 /* Information Section (Upper Left) */
@@ -82,6 +83,9 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600 !important;
+ 
 }
 
 .info-label, .price-label {
@@ -91,27 +95,53 @@
 
 .info-value, .price-value {
   color: #006071;
-  font-weight: bold;
+  font-weight: 800 !important;
 }
 
 /* Payment Options */
 .payment-options {
-  display: flex;
-  gap: 10px;
+  width: 100%;
   margin-top: 15px;
 }
 
-.payment-btn {
+.payment-options h2 {
+  margin-bottom: 15px;
+  color: #006071;
+  text-shadow: 1px 1px 7px rgba(0,0,0,0.4);
+}
+
+.payment-buttons-container {
+  display: flex;
+  gap: 20px;
+}
+
+.payment-cash{
+  background-color: rgba(0, 96, 113, .2);
+  color: #fff;
+  border: 1px solid #006071;
+  padding: 8px 20px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.payment-gcash{
   background-color: #006071;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  flex: 1;
+  padding: 8px 20px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
+.payment-gcash:hover {
+  background-color: #004d5a;
+}
+
+.payment-cash:hover {
+ background-color: #0e899f;
+}
 /* Total Section */
 .total-section {
   display: flex;
@@ -132,3 +162,53 @@
   font-size: 18px;
 }
 
+/* CustomerPayment.css */
+.info-input-container {
+  margin-bottom: 12px;
+}
+
+.info-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #006071;
+  font-size: 14px !important;
+}
+
+.info-input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Keep all your existing styles below */
+
+/* Add these styles to your existing CSS file */
+
+.services-list {
+  width: 100%;
+}
+
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: -10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #006071;
+  font-size: 14px !important;
+  box-sizing: border-box;
+}
+
+/* If you want the service items to look exactly like the input fields */
+.service-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px !important;
+  padding: 10px !important;
+  
+  color: #006071;
+}

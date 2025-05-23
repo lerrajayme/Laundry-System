@@ -110,7 +110,9 @@ const AddressCustomer = () => {
         <div className="address-container">
           <div className="header-row">
             <h2>Saved Addresses</h2>
-            <button className="add-btn"><FaPlus /> Add New Address</button>
+            <Link to="/new-address">
+            <button className="address-btn"><FaPlus /> Add New Address</button>
+            </Link>
           </div>
 
           {showForm && (
