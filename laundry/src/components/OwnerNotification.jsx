@@ -7,9 +7,9 @@ import { TbReport } from "react-icons/tb";
 import { GrBusinessService } from "react-icons/gr";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import './styles/Notifications.css';
+import './styles/OwnerNotification.css';
 
-const NotificationsPage = () => {
+const OwnerNotifications = () => {
   const [activeTab, setActiveTab] = useState('today');
 
   const todayNotifications = [
@@ -57,7 +57,7 @@ const NotificationsPage = () => {
   return (
     <div className="dashboard-container">
       {/* Navbar */}
-      <div className="navbar-customer">
+      <div className="navbar-owner">
         <Link to="/owner" className="logo-container">
           <img
             src="https://cdn-icons-png.flaticon.com/512/4666/4666163.png"
@@ -83,25 +83,25 @@ const NotificationsPage = () => {
       </div>
 
          {/* Sidebar */}
-     <div className="sidebar">
-       <Link to="/book-service">
+     <div className="sidebar-owner">
+       <Link to="/manage-users">
          <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
        </Link>
        
-       <Link to="/addresscustomer">
+       <Link to="/manage-orders">
          <button><GiBeachBag className='side-icon' /> Manage Orders</button>
        </Link>
        
-       <Link to="/order-history">
+       <Link to="/reports">
          <button><TbReport className='side-icon' /> Reports</button>
        </Link>
        
-       <Link to="/feedback">
+       <Link to="/service-list">
          <button><GrBusinessService className='side-icon' /> Service List</button>
        </Link>
      
        <div className="logout">
-         <Link to="/customer-logout">
+         <Link to="/owner-logout">
            <button className="logout-btn">
              <FiLogOut className='side-icon' /> Logout
            </button>
@@ -111,7 +111,7 @@ const NotificationsPage = () => {
      
 
       {/* Main Content */}
-      <div className="main-notification">
+      <div className="owner-notification">
         <div className="notification-section">
           <div className="notification-header">
             <Link to="/owner">
@@ -156,4 +156,4 @@ const NotificationsPage = () => {
   );
 };
 
-export default NotificationsPage;
+export default OwnerNotifications;

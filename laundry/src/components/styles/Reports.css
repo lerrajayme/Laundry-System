@@ -1,0 +1,112 @@
+
+
+/* Scrollable Content */
+.reports-scroll-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: calc(90vh - 170px); /* Adjust based on your header height */
+}
+
+/* Report Wrappers */
+.report-wrapper {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+}
+
+.report-header {
+  background-color: transparent;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+}
+
+.report-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.report-content {
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #000;
+}
+
+.report-item:last-child {
+  border-bottom: none;
+}
+
+/* Details section shown when Show More clicked */
+.details-section {
+  padding: 10px 20px;
+  background-color: rgba(0, 96, 113, 0.1);
+  border-radius: 0 0 8px 8px;
+  color: #003f4a;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Buttons */
+.show-more-btn {
+  background-color: #006071;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+  margin-left: 15px;
+}
+
+.show-more-btn:hover {
+  background-color: #004d5a;
+}
+
+/* Scrollbar Styling */
+.reports-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reports-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.reports-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #006071;
+  border-radius: 4px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .report-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .show-more-btn {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+}

@@ -29,6 +29,10 @@ import AddNewAddress from './components/AddNewAddress';
 import OwnerDashboard from './components/OwnerHomePage';
 import OwnerProfile from './components/OwnerProfile';
 import OwnerNotification from './components/OwnerNotification';
+import OwnerLogout from './components/OwnerLogout';
+import ManageUsers from './components/ManageUsers';
+import ManageOrders from  './components/ManageOrders';
+import Reports from './components/Reports';
 import './App.css';
 
 
@@ -43,8 +47,9 @@ function AppWrapper() {
 
     // Hide Navbar for dashboard routes
     const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/feedback', '/book-service',
-      '/laundry-details', '/customerlogout', '/booking-form', '/subscription', '/customer-payment', '/pay-with-cash', '/pay-with-gcash', 
-      '/new-address', '/owner', '/profile-owner', '/notification-owner',
+      '/laundry-details', '/customer-logout', '/booking-form', '/subscription', '/customer-payment', '/pay-with-cash', '/pay-with-gcash', 
+      '/new-address', '/owner', '/profile-owner', '/notification-owner', '/owner-logout', '/manage-users', '/manage-orders', '/reports',
+      
     ];
     const showNavbar = !hideNavbarOn.includes(location.pathname);
     
@@ -85,7 +90,10 @@ function AppWrapper() {
          <Route path="/owner" element={<OwnerDashboard />} />
          <Route path="/profile-owner" element={<OwnerProfile />} />
          <Route path="/notification-owner" element={<OwnerNotification />} />
-          
+         <Route path="/owner-logout" element={<OwnerLogout />} />
+         <Route path="/manage-users" element={<ManageUsers />} />
+         <Route path="/manage-orders" element={<ManageOrders />} />
+         <Route path="/reports" element={<Reports />} />
   
           
   

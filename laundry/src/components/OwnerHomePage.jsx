@@ -6,14 +6,14 @@ import { TbReport } from "react-icons/tb";
 import { GrBusinessService } from "react-icons/gr";
 import { GiBeachBag } from "react-icons/gi";
 import { Link } from 'react-router-dom'; 
-import './styles/CustomerHomePage.css';
+import './styles/OwnerDashboard.css';
 
 
 const OwnerDashboard = () => {
   return (
     <div className="dashboard-container">
       {/* Navbar */}
-      <div className="navbar-customer">
+      <div className="navbar-owner">
       <Link to="/owner" className="logo-container">
       <img
           src="https://cdn-icons-png.flaticon.com/512/4666/4666163.png"
@@ -39,25 +39,25 @@ const OwnerDashboard = () => {
       </div>
 
       {/* Sidebar */}
-<div className="sidebar">
-  <Link to="/book-service">
+<div className="sidebar-owner">
+  <Link to="/manage-users">
     <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
   </Link>
   
-  <Link to="/addresscustomer">
+  <Link to="/manage-orders">
     <button><GiBeachBag className='side-icon' /> Manage Orders</button>
   </Link>
   
-  <Link to="/order-history">
+  <Link to="/reports">
     <button><TbReport className='side-icon' /> Reports</button>
   </Link>
   
-  <Link to="/feedback">
+  <Link to="/service-list">
     <button><GrBusinessService className='side-icon' /> Service List</button>
   </Link>
 
   <div className="logout">
-    <Link to="/customer-logout">
+    <Link to="/owner-logout">
       <button className="logout-btn">
         <FiLogOut className='side-icon' /> Logout
       </button>

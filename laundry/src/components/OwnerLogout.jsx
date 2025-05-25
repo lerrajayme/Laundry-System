@@ -1,12 +1,14 @@
 import React from 'react';
-import { FaBell, FaUserCircle, FaHeadset, FaAddressCard } from 'react-icons/fa';
+import { FaBell, FaUserCircle, FaHeadset } from 'react-icons/fa';
+import { FaRegCircleUser } from "react-icons/fa6";
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import { VscFeedback, VscCalendar } from "react-icons/vsc";
+import { GrBusinessService } from "react-icons/gr";
+import { TbReport } from "react-icons/tb";
 import { Link, useNavigate } from 'react-router-dom';
-import './styles/CustomerLogout.css';
+import './styles/OwnerLogout.css';
 
-const CustomerLogout = () => {
+const OwnerLogout = () => {
   const navigate = useNavigate();
 
   const handleConfirmLogout = () => {
@@ -15,14 +17,14 @@ const CustomerLogout = () => {
   };
 
   const handleCancel = () => {
-    navigate('/customer'); // balik to dashboard kung cancel
+    navigate('/owner'); // balik to dashboard kung cancel
   };
 
   return (
     <div className="dashboard-container">
       {/* Navbar */}
-      <div className="navbar-customer">
-        <Link to="/customer" className="logo-container">
+      <div className="navbar-owner">
+        <Link to="/owner" className="logo-container">
           <img
             src="https://cdn-icons-png.flaticon.com/512/4666/4666163.png"
             alt="Logo"
@@ -35,31 +37,35 @@ const CustomerLogout = () => {
           <Link to='/customer-support'>
             <FaHeadset className="icon" title="Customer Support" />
           </Link>
-          <Link to='/notifications'>
+          <Link to='/notifications-owner'>
             <FaBell className="icon" title="Notifications" />
           </Link>
-          <Link to='/profile'>
+          <Link to='/profile-owner'>
             <FaUserCircle className="icon" title="Profile" />
           </Link>
         </div>
       </div>
 
       {/* Sidebar */}
-      <div className="sidebar">
-        <Link to="/book-service">
-          <button><VscCalendar className='side-icon' /> Book a Service</button>
-        </Link>
-        <Link to="/addresscustomer">
-          <button><FaAddressCard className='side-icon' /> Address Management</button>
-        </Link>
-        <Link to="/order-history">
-          <button><GiBeachBag className='side-icon' /> Order History</button>
-        </Link>
-        <Link to="/feedback">
-          <button><VscFeedback className='side-icon' /> Feedback & Ratings</button>
-        </Link>
+          <div className="sidebar-owner">
+            <Link to="/manage-users">
+              <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
+            </Link>
+            
+            <Link to="/manage-orders">
+              <button><GiBeachBag className='side-icon' /> Manage Orders</button>
+            </Link>
+            
+            <Link to="/reports">
+              <button><TbReport className='side-icon' /> Reports</button>
+            </Link>
+            
+            <Link to="/service-list">
+              <button><GrBusinessService className='side-icon' /> Service List</button>
+            </Link>
+            
         <div className="logout">
-          <Link to="/customer-logout">
+          <Link to="/owner-logout">
             <button className="logout-btn">
               <FiLogOut className='side-icon' /> Logout
             </button>
@@ -82,4 +88,4 @@ const CustomerLogout = () => {
   );
 };
 
-export default CustomerLogout;
+export default OwnerLogout;

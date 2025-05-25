@@ -8,9 +8,9 @@ import { TbReport } from "react-icons/tb";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link } from 'react-router-dom'; 
 import userProfile from '../assets/ULOL.png'; 
-import './styles/Profile.css';
+import './styles/OwnerProfile.css';
 
-const Profile = () => {
+const OwnerProfile = () => {
   const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
@@ -24,7 +24,7 @@ const Profile = () => {
   return (
     <div className="dashboard-container">
       {/* Navbar */}
-      <div className="navbar-customer">
+      <div className="navbar-owner">
         <Link to="/owner" className="logo-container">
           <img
             src="https://cdn-icons-png.flaticon.com/512/4666/4666163.png"
@@ -50,25 +50,25 @@ const Profile = () => {
       </div>
 
         {/* Sidebar */}
-    <div className="sidebar">
-      <Link to="/book-service">
+    <div className="sidebar-owner">
+      <Link to="/manage-users">
         <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
       </Link>
       
-      <Link to="/addresscustomer">
+      <Link to="/manage-orders">
         <button><GiBeachBag className='side-icon' /> Manage Orders</button>
       </Link>
       
-      <Link to="/order-history">
+      <Link to="/reports">
         <button><TbReport className='side-icon' /> Reports</button>
       </Link>
       
-      <Link to="/feedback">
+      <Link to="/service-list">
         <button><GrBusinessService className='side-icon' /> Service List</button>
       </Link>
     
       <div className="logout">
-        <Link to="/customer-logout">
+        <Link to="/owner-logout">
           <button className="logout-btn">
             <FiLogOut className='side-icon' /> Logout
           </button>
@@ -78,7 +78,7 @@ const Profile = () => {
     
 
       {/* Main Content */}
-      <div className="main-profile">
+      <div className="owner-profile">
          <div className="profile-section">
           <div className="profile-header">
             <Link to="/owner">
@@ -148,4 +148,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default OwnerProfile;

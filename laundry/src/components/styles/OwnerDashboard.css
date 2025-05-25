@@ -1,0 +1,140 @@
+/* Overall layout */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background:transparent;
+  }
+  
+  /* Navbar at the top */
+  .navbar-owner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    backdrop-filter: blur(30px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .navbar-owner .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between logo and text */
+  }
+
+  .navbar-owner .logoImg {
+    width: 50px;
+    height: 50px;
+}
+
+  .navbar-owner .logo {
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: 2px 2px 15px #000;
+  }
+  
+  .navbar-owner .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 150px;
+  }
+  
+  .navbar-owner .icon {
+    font-size: 32px;
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s ease-in-out;/* Smooth transition for shadow effect */
+  }
+  
+  .navbar-owner .icon:hover {
+    color: #006071; /* Stronger shadow on hover */
+  }
+  
+  
+  /* Sidebar on the left */
+  .sidebar-owner {
+        width: 300px;
+        height: 80%; /* Set height to 80% of the viewport height */
+        backdrop-filter: blur(30px);
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content vertically */
+        gap: 20px;
+        color: white;
+        position: fixed;
+        top: 15%; /* Start from 10% of the viewport height */
+        left: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top: 2px solid white;  /* Top border */
+        border-bottom: 2px solid white; 
+        border-right: 2px solid white;
+  }
+  
+  .sidebar-owner button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 20px !important;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    align-items: center;     /* center icon + text vertically */
+    gap: 20px; 
+    display: flex;
+    transition: background 0.3s;
+  }
+
+  .sidebar-owner .side-icon {
+    font-size: 24px; 
+  }
+  
+  .sidebar-owner button:hover {
+    background-color: rgba(0, 96, 113, 0.4);
+  }
+  
+  /* Logout section at the bottom */
+  .sidebar-owner .logout {
+    margin-top: auto;
+    padding-bottom: 30px;
+  }
+  
+  .logout .logout-btn {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    gap: 2  0px;
+  }
+  
+  .logout .logout-btn:hover {
+    background-color: rgba(0, 96, 113, 0.4);
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 240px;
+    margin-top: 250px;
+    padding: 40px;
+    flex: 1;
+  }
+  
+  .main-content h1 {
+    font-size: 100px;
+    color: white;
+    font-weight: bolder;
+    -webkit-text-stroke: 4px #006071;
+    text-shadow: 2px 2px 15px #000;
+  }
+  
