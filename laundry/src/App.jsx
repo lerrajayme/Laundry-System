@@ -33,6 +33,7 @@ import OwnerLogout from './components/OwnerLogout';
 import ManageUsers from './components/ManageUsers';
 import ManageOrders from  './components/ManageOrders';
 import Reports from './components/Reports';
+import ServiceList from './components/ServiceList';
 import './App.css';
 
 
@@ -49,7 +50,7 @@ function AppWrapper() {
     const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/feedback', '/book-service',
       '/laundry-details', '/customer-logout', '/booking-form', '/subscription', '/customer-payment', '/pay-with-cash', '/pay-with-gcash', 
       '/new-address', '/owner', '/profile-owner', '/notification-owner', '/owner-logout', '/manage-users', '/manage-orders', '/reports',
-      
+      '/service-list',
     ];
     const showNavbar = !hideNavbarOn.includes(location.pathname);
     
@@ -94,6 +95,7 @@ function AppWrapper() {
          <Route path="/manage-users" element={<ManageUsers />} />
          <Route path="/manage-orders" element={<ManageOrders />} />
          <Route path="/reports" element={<Reports />} />
+         <Route path='/service-list' element={<ServiceList />} />
   
           
   

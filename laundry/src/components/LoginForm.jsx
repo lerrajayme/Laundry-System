@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './styles/LoginForm.css';
 import { FaEye, FaEyeSlash, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { MdClose, MdEmail } from "react-icons/md";
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
@@ -13,16 +14,18 @@ const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
 
-  const toggleRole = () => {
-    setRoleOpen(!roleOpen);
-  };
+  const [passwordError, setPasswordError] = useState('');
+  const [roleError, setRoleError] = useState('');
+
+  const toggleRole = () => setRoleOpen(!roleOpen);
 
   const selectRole = (role) => {
     setSelectedRole(role);
     setRoleOpen(false);
-    setErrorMessage(''); // Clear error when selecting role
+    setLoginError('');
   };
 
   useEffect(() => {
@@ -36,25 +39,44 @@ const LoginForm = () => {
   }, []);
 
   const togglePassword = () => setShowPassword(!showPassword);
+  const handleClose = () => navigate('/');
 
-  const handleClose = () => {
-    navigate('/');
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoginError('');
+    setPasswordError('');
+    setRoleError('');
 
-    // Only validate role — email is validated by browser
-    if (!selectedRole) {
-      setErrorMessage("Please select a role.");
-      return;
+    // Basic validation
+    let valid = true;
+    if (!password) {
+      setPasswordError('Password is required.');
+      valid = false;
     }
+    if (!selectedRole) {
+      setRoleError('Please select a role.');
+      valid = false;
+    }
+    if (!valid) return;
 
-    // Redirect based on selected role
-    if (selectedRole === "CUSTOMER") {
-      navigate("/customer");
-    } else if (selectedRole === "OWNER") {
-      navigate("/owner");
+    try {
+      const response = await axios.post('http://localhost:8000/api/login', {
+        email,
+        password,
+        role: selectedRole
+      });
+
+      if (response.data.success) {
+        navigate(selectedRole === "CUSTOMER" ? "/customer" : "/owner");
+      } else {
+        setLoginError('Invalid credentials. Please try again.');
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        setLoginError('Invalid credentials. Please try again.');
+      } else {
+        setLoginError('Login failed. Please try again later.');
+      }
     }
   };
 
@@ -65,8 +87,6 @@ const LoginForm = () => {
       </span>
       <form onSubmit={handleSubmit}>
         <h1>Login</h1>
-
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         <div className="input-box">
           <input
@@ -79,7 +99,6 @@ const LoginForm = () => {
           <MdEmail className="icon" />
         </div>
 
-        {/* Role Dropdown */}
         <div className="role" ref={roleRef}>
           <div className="role-select" onClick={toggleRole}>
             <span>{selectedRole || "-- Select Role --"}</span>
@@ -91,17 +110,28 @@ const LoginForm = () => {
               <li onClick={() => selectRole("OWNER")}>OWNER</li>
             </ul>
           )}
+          {roleError && <p className="field-error">{roleError}</p>}
         </div>
 
-        <div className="input-box">
+        <div className="input-box password-container">
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError('');
+              setLoginError('');
+            }}
             required
           />
           <span className="icon" onClick={togglePassword}>
             {showPassword ? <FaEye /> : <FaEyeSlash />}
           </span>
+          <div className="error-container">
+            {passwordError && <p className="field-error">{passwordError}</p>}
+            {loginError && !passwordError && <p className="field-error">{loginError}</p>}
+          </div>
         </div>
 
         <div className="remember-forgot">
@@ -111,7 +141,6 @@ const LoginForm = () => {
         
         <button type="submit" className="btn">Login</button>
         
-
         <div className="register">
           <p>Don't have an account? <Link to="/register">Register</Link></p>
         </div>

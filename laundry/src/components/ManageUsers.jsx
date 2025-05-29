@@ -140,7 +140,7 @@ const ManageUsers = () => {
           <div className="user-management-wrapper">
             <div className="user-management-container">
               <div className="table-responsive">
-                <table className="user-management-table">
+                <table className="user-management-table-users">
                   <thead>
                     <tr>
                       <th>User ID</th>
@@ -159,13 +159,13 @@ const ManageUsers = () => {
                         <td>{user.role}</td>
                         <td>
                           <button 
-                            className="edit-btn"
+                            className="edit-btn-users"
                             onClick={() => handleEdit(user.id)}
                           >
                             Edit
                           </button>
                           <button 
-                            className="delete-btn"
+                            className="delete-btn-users"
                             onClick={() => handleDeleteClick(user.id)}
                           >
                             Delete
@@ -184,9 +184,9 @@ const ManageUsers = () => {
       {isEditModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <div className="modal-header">
+            <div className="modal-header-users">
               <h2>Edit User</h2>
-              <button className="close-btn" onClick={() => setIsEditModalOpen(false)}>
+              <button className="close-btn-users" onClick={() => setIsEditModalOpen(false)}>
                 &times;
               </button>
             </div>
@@ -198,7 +198,7 @@ const ManageUsers = () => {
                 name="name"
                 value={editedData.name}
                 onChange={handleInputChange}
-                required
+                readOnly className="read-only-input"
               />
             </div>
             
@@ -209,7 +209,8 @@ const ManageUsers = () => {
                 name="email"
                 value={editedData.email}
                 onChange={handleInputChange}
-                required
+                readOnly className="read-only-input"
+
               />
             </div>
             
@@ -230,14 +231,14 @@ const ManageUsers = () => {
             <div className="modal-actions">
               <button 
                 type="button" 
-                className="cancel-btn" 
+                className="cancel-btn-users" 
                 onClick={() => setIsEditModalOpen(false)}
               >
                 Cancel
               </button>
               <button 
                 type="button" 
-                className="save-btn"
+                className="save-btn-users"
                 onClick={handleSave}
               >
                 Save
@@ -250,7 +251,7 @@ const ManageUsers = () => {
       {isDeleteModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content delete-modal">
-            <div className="modal-header">
+            <div className="modal-header-users">
               <h2>Confirm Delete</h2>
             </div>
             
@@ -262,14 +263,14 @@ const ManageUsers = () => {
             <div className="modal-actions">
               <button 
                 type="button" 
-                className="cancel-btn-delete"
+                className="cancel-btn-delete-users"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
                 Cancel
               </button>
               <button 
                 type="button" 
-                className="delete-confirm-btn"
+                className="delete-confirm-btn-users"
                 onClick={confirmDelete}
               >
                 Delete

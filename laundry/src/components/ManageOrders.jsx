@@ -126,7 +126,7 @@ const ManageOrders = () => {
           <div className="user-management-wrapper">
             <div className="user-management-container">
               <div className="table-responsive">
-                <table className="user-management-table">
+                <table className="order-management-table">
                   <thead>
                     <tr>
                       <th>Order ID</th>
@@ -164,9 +164,9 @@ const ManageOrders = () => {
       {isOrderModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <div className="modal-header">
+            <div className="modal-header-orders">
               <h2>Update Order Status</h2>
-              <button className="close-btn" onClick={() => setIsOrderModalOpen(false)}>
+              <button className="close-btn-orders" onClick={() => setIsOrderModalOpen(false)}>
                 &times;
               </button>
             </div>
@@ -212,14 +212,14 @@ const ManageOrders = () => {
             <div className="modal-actions">
               <button 
                 type="button" 
-                className="cancel-btn" 
+                className="cancel-btn-orders" 
                 onClick={() => setIsOrderModalOpen(false)}
               >
                 Cancel
               </button>
               <button 
                 type="button" 
-                className="save-btn"
+                className="save-btn-orders"
                 onClick={handleUpdateOrder}
               >
                 Update
