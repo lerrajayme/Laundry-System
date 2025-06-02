@@ -16,16 +16,12 @@ import CustomerSupport from './components/CustomerSupport';
 import Profile from './components/Profile';
 import AddressCustomer from './components/AddressCustomer';
 import OrderHistory from './components/OrderHistory';
-import FeedbackRatings from './components/FeedbackRatings';
 import BookService from './components/BookService';
 import LaundryShopDetails from './components/LaundryShopDetails';
 import CustomerLogout from './components/CustomerLogout';
 import BookingForm from './components/BookingForm';
 import CustomerPayment from './components/CustomerPayment';
-import Subscription from './components/Subscription';
 import PayCash from './components/PayCash';
-import PayGcash from './components/PayGcash';
-import AddNewAddress from './components/AddNewAddress';
 import OwnerDashboard from './components/OwnerHomePage';
 import OwnerProfile from './components/OwnerProfile';
 import OwnerNotification from './components/OwnerNotification';
@@ -47,9 +43,9 @@ function AppWrapper() {
   const showContent = showContentOn.includes(location.pathname);
 
     // Hide Navbar for dashboard routes
-    const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/feedback', '/book-service',
-      '/laundry-details', '/customer-logout', '/booking-form', '/subscription', '/customer-payment', '/pay-with-cash', '/pay-with-gcash', 
-      '/new-address', '/owner', '/profile-owner', '/notification-owner', '/owner-logout', '/manage-users', '/manage-orders', '/reports',
+    const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/book-service',
+      '/laundry-details', '/customer-logout', '/booking-form', '/customer-payment', '/pay-with-cash', '/owner', '/profile-owner', 
+      '/notification-owner', '/owner-logout', '/manage-users', '/manage-orders', '/reports',
       '/service-list',
     ];
     const showNavbar = !hideNavbarOn.includes(location.pathname);
@@ -71,9 +67,7 @@ function AppWrapper() {
           <Route path="/customer-support" element={<CustomerSupport />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/addresscustomer" element={<AddressCustomer />} />
-          <Route path="/new-address" element={<AddNewAddress />} />
           <Route path="/order-history" element={<OrderHistory />} />
-          <Route path="/feedback" element={<FeedbackRatings />} />
           <Route path="/customer-logout" element={<CustomerLogout />} />
           <Route path="/customer" element={<CustomerDashboard />} />
 
@@ -105,9 +99,8 @@ function AppWrapper() {
           <Route path="/laundry-details" element={<LaundryShopDetails />} />
           <Route path="/booking-form" element={<BookingForm />} />
           <Route path="/customer-payment" element={<CustomerPayment />} />
-          <Route path="/subscription" element={<Subscription />} />
           <Route path="/pay-with-cash" element={<PayCash />} />
-          <Route path="/pay-with-gcash" element={<PayGcash />} />
+          
 
         </Routes>
       </div>

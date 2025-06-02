@@ -8,47 +8,33 @@ import { GiBeachBag } from "react-icons/gi";
 import { VscFeedback, VscCalendar } from "react-icons/vsc";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link, useLocation } from 'react-router-dom';
-import laundryImage from '../assets/laundryshop.jpg';
 import './styles/LaundryShopDetails.css';
 
 const LaundryShopDetails = () => {
   const location = useLocation();
   const { shop } = location.state || {};
 
-  // Default shop data with proper service structure
-  const defaultShop = {
-    id: 1,
-    name: "Denhart's Launderland",
-    address: "Gaabucayan Street, Corrales ex, CDO",
-    contact: "+63 935 902 8261",
-    hours: "Mon - Sun, 8 AM - 7 PM",
-    services: [
-      {
-        name: "Wash",
-        price: "60",
-        description: "Maximum of 7 kilos"
-      },
-      {
-        name: "Wash",
-        price: "60",
-        description: "Comforter/Blanket\nMaximum of 4 kilos"
-      },
-      {
-        name: "Wash, Dry & Fold",
-        price: "190.00",
-        description: "Maximum of 7 kilos\nFree Detergent, Fabcon and Fold"
-      }
-    ]
-  };
+  // If no shop data was passed, show error and return early
+  if (!shop) {
+    return (
+      <div className="dashboard-container">
+        <div className="error-message">
+          <h2>No shop data available</h2>
+          <Link to="/book-service">
+            <button className="back-button">Go Back to Shops</button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
-  const currentShop = shop || defaultShop;
-
-  // Ensure services exist and have proper structure
-  const safeServices = currentShop.services?.map(service => ({
+  // Process services data safely
+  const safeServices = shop.services?.map(service => ({
     name: service.name || "Service",
     price: service.price || "0",
     description: service.description || "No description available"
   })) || [];
+
 
   return (
     <div className="dashboard-container">
@@ -120,35 +106,44 @@ const LaundryShopDetails = () => {
           <div className='laundry-details'>
             <div className="laundry-card">
               <img
-                src={laundryImage}
-                alt={currentShop.name}
+                src={shop.image} // Use the image from props
+                alt={shop.name}
                 className="laundry-img"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://via.placeholder.com/400x250?text=Laundry+Shop";
+                }}
               />
+
               <div className="laundry-info">
-                <h2>{currentShop.name}</h2>
-                <p><FaMapMarkerAlt className="icon-inline" /> {currentShop.address}</p>
-                <p><FaPhoneAlt className="icon-inline" /> {currentShop.contact}</p>
-                <p><FaClock className="icon-inline" /> Operating Hours: {currentShop.hours}</p>
+                <h2>{shop.name}</h2>
+                <p><FaMapMarkerAlt className="icon-inline" /> {shop.address}</p>
+                <p><FaPhoneAlt className="icon-inline" /> {shop.contact}</p>
+                <p><FaClock className="icon-inline" /> Operating Hours: {shop.hours}</p>
 
                 <h3>Services and Price</h3>
                 <div className="services-list">
                   {safeServices.map((service, index) => (
-                    <div key={index}>
-                      <p><strong>{service.name} - {service.price}</strong></p>
-                      {service.description && service.description.split('\n').map((line, i) => (
-                        <p key={i}>{line}</p>
-                      ))}
+                    <div className="service-card" key={index}>
+                      <div className="service-name">{service.name}</div>
+                      <div className="service-price">{service.price}</div>
+                      <div className="service-description">
+                        {service.description.split('\n').map((line, i) => (
+                          <p key={i}>{line}</p>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
 
-                <Link 
-                  to='/booking-form' 
-                  state={{ shop: currentShop }}
-                  className="book-btn-link"
-                >
-                  <button className="book-btn">BOOK</button>
-                </Link>
+                <div className="book-btn-container">
+                  <Link 
+                    to="/booking-form" 
+                    state={{ shop: shop }}  // Ensure this is correct
+                  >
+                    <button className="book-btn">BOOK</button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

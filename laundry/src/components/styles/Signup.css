@@ -227,7 +227,8 @@
   padding-left: 10px;
   text-shadow: none;
   position: absolute;
-  bottom: 50px;
+  bottom: -25px !important;
+  left: 0px !important;
   
 }
 
@@ -236,3 +237,87 @@
   border-color: #ec3538 !important;
 }
 
+/* Add these to your existing Signup.css */
+
+/* API Error Message with Disappearing Animation */
+.api-error {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 450px;
+    color: #fff;
+    background: rgba(236, 53, 56, 0.8);
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid rgba(236, 53, 56, 0.3);
+    z-index: 1000;
+    animation: 
+        fadeIn 0.3s ease-out,
+        fadeOut 0.3s ease-out 5s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}
+
+/* Loading State for Button */
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Icon Error State */
+.icon-error {
+    color: #ec3538 !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 500px) {
+    .wrapper-signup {
+        padding: 30px 20px;
+    }
+    
+    .wrapper-signup h1 {
+        font-size: 28px;
+    }
+}
+
+/* Ensure error messages don't push content too far */
+.error-message {
+    position: absolute;
+    bottom: -20px;
+    left: 15px;
+    margin: 0;
+    font-size: 13px;
+}
+
+/* Role error message positioning */
+.role .error-message {
+    bottom: -25px;
+}
+
+/* Input box position relative for error messages */
+.input-box {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+/* Add this to your existing CSS */
+.input-box input:-webkit-autofill,
+.input-box input:-webkit-autofill:hover, 
+.input-box input:-webkit-autofill:focus, 
+.input-box input:-webkit-autofill:active {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+     /* Optional: keeps the cursor color white */
+}

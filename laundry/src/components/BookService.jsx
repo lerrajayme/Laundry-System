@@ -5,36 +5,110 @@ import { GiBeachBag } from "react-icons/gi";
 import { VscFeedback, VscCalendar } from "react-icons/vsc";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom'; 
+import DENHARTS from '../assets/DENHARTS LAUNDERLAND.jpg';
+import WashTub from '../assets/WashTub Laundry Hub.jpg';
+import Igot from '../assets/I-GOT LAUNDRY HUB.jpg';
+import MsLabandera from '../assets/MS LABANDERA LAUNDRY HUB.jpg';
+import SpinKlean from '../assets/SPIN KLEAN LAUNDRY EXPRESS.jpg';
+
 import './styles/BookService.css';
+ 
 
 const laundryShops = [
   {
     id: 1,
     name: "Denhart's Launderland",
     address: "Gaabacuyan St., Corrales Ex, CDO",
-    // Add more details you want to show on the details page
-    description: "Premium laundry services with eco-friendly detergents",
-    services: ["Wash & Fold", "Dry Cleaning", "Ironing"],
-    hours: "8:00 AM - 8:00 PM",
-    contact: "09123456789"
+    image: DENHARTS,
+    description: "Laundry service that makes life easier",
+    services: [{
+        name: "Wash (Regular)",
+        price: "₱60.00",
+        description: "Regular clothes\nMaximum 7kg per load"
+             },
+             {
+        name: "Wash (Comforter)",
+        price: "₱60.00",
+        description: "Comforter/Blanket\nMaximum 4kg per load"
+             },
+             {
+        name: "Wash, Dry & Fold",
+        price: "₱190.00",
+        description: "Regular clothes\nMaximum 7kg per load\nFree Detergent & Fabcon"
+             }],
+    hours: "7:00 AM - 7:00 PM",
+    contact: "0935-902-8261"
   },
   {
     id: 2,
     name: "Ms. Labandera Laundry Hub",
     address: "Market City, Valenzuela RD, Lapasan",
-    description: "Fast and affordable laundry services",
-    services: ["Wash & Fold", "Ironing"],
-    hours: "7:00 AM - 7:00 PM",
-    contact: "09234567890"
+    image: MsLabandera,
+    description: "Laundry Hub - We Wash, Dry, & Fold your clothes with plaesure.",
+    services: [{
+        name: "Wash (Regular)",
+        price: "₱60.00",
+        description: " Maximum 7kg per load"
+             },
+             {
+        name: "Wash (Linens)",
+        price: "₱60.00",
+        description: " Maximum 5kg per load"
+             },
+            {
+        name: "Wash, Dry & Fold",
+        price: "₱200.00",
+        description: "Regular clothes\nMaximum 7kg per load\nFree Detergent & Fabcon"
+             }],
+    hours: "7:30 AM - 7:30 PM",
+    contact: "0927-999-3139"
   },
   {
     id: 3,
-    name: "Wash Tub Laundry Hub",
-    address: "Osmena Ext, 9000",
-    description: "Self-service and full-service options available",
-    services: ["Self-Service", "Wash & Fold", "Dry Cleaning"],
-    hours: "24/7",
-    contact: "09345678901"
+    name: "WashTub Laundry Hub",
+    address: "Osmena Ext, Cagayan de Oro City",
+    image: WashTub,
+    description: "We do your laundry quick and clean!",
+    services: [{
+        name: "Wash & Dry (Self Service)",
+        price: "₱150.00",
+        description: "Regular clothes\nMaximum 8kg per load\nFree Detergent & Fabcon"
+             },
+            {
+        name: "Wash & Dry (Drop Off)",
+        price: "₱200.00",
+        description: "Regular clothes\nMaximum 8kg per load\nFree Detergent & Fabcon"
+             }],
+    hours: "6:30 AM - 8:30 PM",
+    contact: "0934-567-8901"
+  },
+  {
+    id: 4,
+    name: "Spin Klean Laundry Express",
+    address: "Osmena Ext, Cagayan de Oro City",
+    image: SpinKlean,
+    description: "Fresh, clean clothes delivered to your doorstep daily!",
+    services: [{
+        name: "Wash, Dry & Fold",
+        price: "₱185.00",
+        description: "Regular clothes\nMaximum 7kg per load\nFree Detergent & Fabcon"
+             }],
+    hours: "7:00 AM - 7:00 PM",
+    contact: "0905-781-3796"
+  },
+  {
+    id: 5,
+    name: "I-got Laundry Hub",
+    address: "Valenzuela Rd, Agora Rd Lapasan , CDO",
+    image: Igot,
+    description: "Take a rest I-got the job",
+    services: [{
+        name: "Wash, Dry & Fold",
+        price: "₱190.00",
+        description: "Regular clothes\nMaximum 7kg per load\nFree Detergent & Fabcon"
+             }],
+    hours: "7:00 AM - 7:00 PM",
+    contact: "0917-633-1165"
   },
 ];
 
@@ -43,7 +117,14 @@ const BookService = () => {
   const navigate = useNavigate();
 
   const handleViewDetails = (shop) => {
-    navigate('/laundry-details', { state: { shop } });
+    navigate('/laundry-details', { 
+      state: { 
+      shop: {
+      ...shop,
+      services: shop.services || [], // Ensure services array exists
+      contact: shop.contact || "Not provided",
+      hours: shop.hours || "Not specified",
+      image: shop.image } }});
   };
   return (
     <div className="dashboard-container">
@@ -121,7 +202,18 @@ const BookService = () => {
       <div className="shop-list">
       {laundryShops.map((shop) => (
         <div className="shop-card-landscape" key={shop.id}>
-          <div className="image-placeholder" />
+          <div className="image-placeholder">
+            <img 
+            src={shop.image || "https://via.placeholder.com/260x110?text=No+Image"} 
+            alt={shop.name}
+            className="shop-image"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://via.placeholder.com/260x110?text=No+Image";
+            }}
+          />
+         </div>
+
           <div className="shop-content">
             <h3 className="shop-name">{shop.name || "Unnamed Laundry Shop"}</h3>
             {shop.address && (

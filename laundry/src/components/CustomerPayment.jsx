@@ -4,37 +4,98 @@ import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from 'react-icons/gi';
 import { VscFeedback, VscCalendar } from 'react-icons/vsc';
 import { IoArrowBackCircle } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './styles/CustomerPayment.css';
 
 const CustomerPayment = () => {
-  // Mock data with placeholders
-  const customerInfo = {
-    name: "Maria Santos",
-    email: "maria.santos@example.com",
-    phone: "09123456789",
-    address: "123 Main Street, Quezon City"
+  // Retrieve data passed from the booking form or subscription page
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Check if we have data in location.state first
+  const stateData = location.state || {};
+
+  // Fallback to localStorage if no state
+  let storedState;
+  try {
+    storedState = JSON.parse(localStorage.getItem('customerPaymentState')) || {};
+  } catch (e) {
+    storedState = {};
+  }
+
+  // Merge data sources with priority to location.state
+  const {
+    customerData = storedState.customerData || {},
+    bookingData = storedState.bookingData || {},
+    subscriptionData = storedState.subscriptionData || null,
+    pricing = storedState.pricing || {},
+    shopDetails = storedState.shopDetails || {}
+  } = stateData;
+
+  console.log('Received data:', {
+    customerData,
+    bookingData,
+    subscriptionData,
+    pricing,
+    shopDetails
+  });
+
+
+  // Move handleBackClick up here
+  const handleBackClick = () => {
+    navigate(-1); // This goes back to the previous page in history
+    
   };
 
+
+  // Merge customer details (from profile or form)
+  const customerInfo = {
+    name: customerData.name || "Not provided",
+    email: customerData.email || "Not provided",
+    phone: customerData.phone ? `+63${customerData.phone}` : "Not provided",
+    address: customerData.address || "Not provided"
+  };
+
+ // Booking information including subscription
   const bookingInfo = {
-    pickupDate: "12/15/2023",
-    pickupTime: "10:00 AM",
+    shopName: shopDetails.name || "Laundry Shop",
+    pickupDate: bookingData.pickupDate || "Not specified",
+    pickupTime: bookingData.pickupTime || "Not specified",
     services: [
-      { name: "Wash & Fold: ", price: 150 },
-      { name: "Subscription: ", price: 299 }
+      ...(bookingData.services || []), // Regular services
+      ...(subscriptionData ? [{
+        name: `Subscription: ${subscriptionData.planName}`,
+        price: subscriptionData.price
+      }] : [])
     ]
   };
 
-  const pricing = {
-    subtotal: bookingInfo.services.reduce((sum, service) => sum + service.price, 0),
-    bookingFee: 10.00,
-    total: 0
+  // Calculate pricing
+  const calculateSubtotal = () => {
+    let subtotal = 0;
+
+    if (bookingData.services) {
+      subtotal += bookingData.services.reduce((sum, service) => sum + (service.price || 0), 0);
+    }
+    if (subscriptionData && subscriptionData.price) {
+      subtotal += subscriptionData.price;
+    }
+    return subtotal;
   };
-  pricing.total = pricing.subtotal + pricing.bookingFee;
+
+  const updatedSubtotal = calculateSubtotal();
+
+  const updatedPricing = {
+    ...pricing,
+    subtotal: updatedSubtotal,
+    bookingFee: pricing.bookingFee ?? 10.00, // fallback 10 if no bookingFee
+    total: updatedSubtotal + (pricing.bookingFee ?? 10.00)
+  };
+
 
   return (
     <div className="dashboard-container">
-      {/* Navbar - unchanged */}
+      {/* Navbar */}
       <div className="navbar-customer">
         <Link to="/customer" className="logo-container">
           <img src="https://cdn-icons-png.flaticon.com/512/4666/4666163.png" alt="Logo" className="logoImg" />
@@ -47,7 +108,7 @@ const CustomerPayment = () => {
         </div>
       </div>
 
-      {/* Sidebar - unchanged */}
+      {/* Sidebar */}
       <div className="sidebar">
         <Link to="/book-service"><button><VscCalendar className="side-icon" /> Book a Service</button></Link>
         <Link to="/addresscustomer"><button><FaAddressCard className="side-icon" /> Address Management</button></Link>
@@ -61,12 +122,12 @@ const CustomerPayment = () => {
       {/* Main Content */}
       <div className="main-book">
         <div className="book-header">
-          <Link to="/booking-form"><IoArrowBackCircle className="back-button" /></Link>
+          <IoArrowBackCircle className="back-button" onClick={handleBackClick}/>
           <h1 className="book-title">CUSTOMER PAYMENT</h1>
         </div>
 
         <div className="payment-summary">
-          {/* Customer Information with Placeholders */}
+          {/* Customer Information */}
           <div className="section">
             <h2>Customer Details</h2>
             <div className="info-input-container">
@@ -78,15 +139,7 @@ const CustomerPayment = () => {
                 placeholder="Complete Name"
               />
             </div>
-            <div className="info-input-container">
-              <input 
-                type="email" 
-                value={customerInfo.email} 
-                readOnly
-                className="info-input"
-                placeholder="Email Address"
-              />
-            </div>
+          
             <div className="info-input-container">
               <input 
                 type="tel" 
@@ -107,7 +160,7 @@ const CustomerPayment = () => {
             </div>
           </div>
 
-          {/* Booking Information with Placeholders */}
+          {/* Booking Information */}
           <div className="section">
             <h2>Booking Details</h2>
             <div className="info-input-container">
@@ -122,50 +175,62 @@ const CustomerPayment = () => {
             <div className="info-input-container">
               <input
                 type="text"
-                value={bookingInfo.pickupTime}
+                value={bookingData.pickupTime || "Not specified"}
                 readOnly
                 className="info-input"
                 placeholder="Pickup Time"
               />
             </div>
             <div className="services-list">
-              {bookingInfo.services.map((service, index) => (
-                <div key={index} className="service-item">
-                  <span>{service.name}</span>
-                  <span>₱{service.price.toFixed(2)}</span>
-                </div>
-              ))}
+              {bookingData.services && bookingData.services.length > 0 ? (
+                bookingData.services.map((service, index) => (
+                  <div key={index} className="service-item">
+                    <span>{service.name} </span>
+                    <span>₱{service.price.toFixed(2)}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="no-services">No services selected</div>
+              )}
             </div>
           </div>
 
-          {/* Payment Summary - unchanged */}
+          {/* Payment Summary */}
           <div className="section">
             <h2>Payment Summary</h2>
             <div className="price-row">
               <span>Subtotal:</span>
-              <span>₱{pricing.subtotal.toFixed(2)}</span>
+              <span>₱{updatedPricing.subtotal.toFixed(2)}</span>
             </div>
+            
             <div className="price-row">
               <span>Booking Fee:</span>
-              <span>₱{pricing.bookingFee.toFixed(2)}</span>
+              <span>₱{updatedPricing.bookingFee.toFixed(2)}</span>
             </div>
-            <div className="price-row">
+            <div className="price-row total-row">
               <span>Total: </span>
-              <span>₱{pricing.total.toFixed(2)}</span>
+              <span>₱{updatedPricing.total.toFixed(2)}</span>
             </div>
           </div>
 
-         <div className="payment-options">
-          <h2>Choose a payment method</h2>
-          <div className="payment-buttons-container">
-            <Link to='/pay-with-cash'>
-            <button className="payment-cash">Pay with Cash</button>
-            </Link>
-            <Link to='/pay-with-gcash'>
-            <button className="payment-gcash">Pay with GCash</button>
-            </Link>
+          <div className="payment-options">
+            <h2>Choose a payment method</h2>
+            <div className="payment-buttons-container">
+              <Link 
+                to="/pay-with-cash" 
+                state={{ 
+                  customerData,          // original data
+                  bookingData,           // original data
+                  subscriptionData,
+                  pricing: updatedPricing,
+                  shopDetails
+                }}
+              >
+                <button className="payment-cash">Pay with Cash</button>
+              </Link>
+              
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>

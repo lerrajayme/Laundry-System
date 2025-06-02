@@ -33,16 +33,17 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
-  gap: 20px;
-  max-width: 800px;
+  gap: 10px;
+  width: 1000px;
   margin: 10px auto;
   font-family: Arial, sans-serif;
   color: #006071;
+  
 }
 
 /* Sections */
 .section {
-  padding: 15px;
+  padding: 10px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -50,8 +51,9 @@
 }
 
 .section h2 {
-    text-shadow: 1px 1px 7px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 7px rgba(0,0,0,0.2);
     margin-top: -10px;
+    color: #006071;
 }
 
 /* Information Section (Upper Left) */
@@ -116,7 +118,7 @@
 }
 
 .payment-cash{
-  background-color: rgba(0, 96, 113, .2);
+  background-color: #006071;
   color: #fff;
   border: 1px solid #006071;
   padding: 8px 20px;
@@ -125,22 +127,8 @@
   font-weight: 600;
 }
 
-.payment-gcash{
-  background-color: #006071;
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 15px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.payment-gcash:hover {
-  background-color: #004d5a;
-}
-
 .payment-cash:hover {
- background-color: #0e899f;
+ background-color: #004d5a;
 }
 /* Total Section */
 .total-section {
@@ -186,29 +174,26 @@
 
 /* Add these styles to your existing CSS file */
 
+/* Compact Services List */
 .services-list {
   width: 100%;
+  margin: 20px 0;
 }
 
 .service-item {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  margin-bottom: -10px;
-  border: 1px solid #ddd;
+  padding: 6px 8px;
+  margin: -15px 0;
+  font-size: 13px;
+  background: rgba(0, 96, 113, 0.1);
   border-radius: 4px;
-  background-color: #f9f9f9;
-  color: #006071;
-  font-size: 14px !important;
-  box-sizing: border-box;
+  color: #fff;
 }
 
-/* If you want the service items to look exactly like the input fields */
-.service-item {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 4px !important;
-  padding: 10px !important;
-  
-  color: #006071;
+.service-item span:first-child::after {
+  content: ":";
+  margin: 0 4px;
 }
+
+

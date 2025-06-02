@@ -50,11 +50,13 @@
 /* Rest of your CSS remains exactly the same */
 .laundry-details {
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(90% - 10px); /* 50px accounts for your header height */
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
+  overflow-y: auto;
+  
 }
 
 .laundry-card {
@@ -66,10 +68,14 @@
 }
 
 .laundry-img {
-  width: 800px;
-  height: 100px;
-  border-radius: 0;
-  object-fit: cover;
+  width: 100%;       /* Take full width of container */
+  max-width: 800px;  /* Maximum width */
+  height: auto;      /* Maintain aspect ratio */
+  max-height: 300px; /* Maximum height (adjust as needed) */
+  object-fit: contain; /* Show entire image without distortion */
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;  
 }
 
 .laundry-info {
@@ -88,8 +94,10 @@
 
 .laundry-info h3 {
   color: #fff;
-  margin: -10px 0 20px;
-  margin-left: 400px;
+  margin: -10px 0 25px;
+  margin-left: 430px;
+  font-size: 20px !important;
+  text-shadow:1px solid #004d5a !important;
 }
 
 .laundry-info p {
@@ -101,7 +109,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 40px;
   margin: -10px 0;
   width: 100%;
 }
@@ -114,10 +122,11 @@
 }
 
 .book-btn-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
   position: absolute;
+  bottom: 0px; /* Distance from bottom */
+  right:  20px !important; /* Distance from right */
+  width: auto; /* Don't need full width */
+  
 }
 
 .book-btn {
@@ -129,10 +138,48 @@
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  margin-left: 900px;
-  margin-bottom: 40px !important;
+    /* Remove margin-left and margin-bottom */
+  transition: background-color 0.3s ease;
 }
 
 .book-btn:hover {
   background-color: #004d5a;
 }
+
+.laundry-details::-webkit-scrollbar {
+    width: 7px;
+  }
+.laundry-details::-webkit-scrollbar-thumb {
+    background: #006071;
+    border-radius: 4px;
+  }
+
+.service-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.service-name {
+  font-weight: bold;
+  color: #fff;
+  font-size: 18px;
+}
+
+.service-price {
+  color: #fff;
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.service-description {
+  color: #ddd;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.service-description p {
+  margin: 5px 0;
+}
+

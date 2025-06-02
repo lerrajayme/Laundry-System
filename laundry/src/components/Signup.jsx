@@ -8,6 +8,10 @@ import axios from 'axios';
 const Signup = () => {
     const navigate = useNavigate();
     
+    axios.defaults.baseURL = 'http://localhost:8000';
+    axios.defaults.withCredentials = true;
+
+
     // Form states
     const [formData, setFormData] = useState({
         fullName: '',
@@ -33,8 +37,10 @@ const Signup = () => {
     
     const [apiError, setApiError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [fadeOut, setFadeOut] = useState(false);
     
     const roleRef = useRef(null);
+    const timeoutRef = useRef(null);
 
     // Handle input changes
     const handleChange = (e) => {
@@ -95,6 +101,8 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setApiError('');
+        setFadeOut(false);
+        clearTimeout(timeoutRef.current);
         
         // Validate form
         let hasErrors = false;
@@ -141,10 +149,15 @@ const Signup = () => {
         setIsSubmitting(true);
         
         try {
-            const response = await axios.post('http://localhost:8000/api/signup', {
-                fullName: formData.fullName,
+
+            // Get CSRF cookie from Sanctum
+            await axios.get('/sanctum/csrf-cookie');
+
+            const response = await axios.post('http://localhost:8000/api/register', {
+                name: formData.fullName,
                 email: formData.email,
                 password: formData.password,
+                password_confirmation: formData.confirmPassword,
                 role: formData.role
             }, {
                 headers: {
@@ -152,35 +165,39 @@ const Signup = () => {
                 }
             });
             
-            if (response.data.success) {
+            if (response.status === 201) { // Check HTTP status code
                 alert('Registration successful! Please login.');
                 navigate('/login');
             } else {
                 setApiError(response.data.message || 'Registration failed');
+                startFadeOut();
             }
         } catch (error) {
             console.error('Signup error:', error);
             
             if (error.response) {
                 // Server responded with error status
-                if (error.response.data && error.response.data.message) {
-                    setApiError(error.response.data.message);
-                } else if (error.response.status === 409) {
-                    setApiError('Email already exists');
-                } else {
-                    setApiError('Registration failed. Please try again.');
-                }
-            } else if (error.request) {
-                // Request was made but no response
-                setApiError('Network error. Please check your connection.');
+                setApiError(
+                    error.response.data?.message ||
+                    error.response.data?.error ||
+                    'Registration failed. Please try again.'
+                );
             } else {
-                // Other errors
-                setApiError('An error occurred. Please try again.');
+                setApiError('Network error. Please check your connection.');
             }
+            startFadeOut();
         } finally {
             setIsSubmitting(false);
         }
     };
+
+        
+        const startFadeOut = () => {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = setTimeout(() => {
+                setFadeOut(true);
+            }, 500);
+        };
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -191,7 +208,10 @@ const Signup = () => {
         };
         
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            clearTimeout(timeoutRef.current);
+        };
     }, []);
 
     return (
@@ -203,7 +223,11 @@ const Signup = () => {
             <form onSubmit={handleSubmit}>
                 <h1>Registration</h1>
                 
-                {apiError && <div className="api-error">{apiError}</div>}
+                {apiError && (
+                    <div className={`api-error ${fadeOut ? 'fade-out' : ''}`}>
+                        {apiError}
+                    </div>
+                )}
                 
                 {/* Name Field */}
                 <div className="input-box">

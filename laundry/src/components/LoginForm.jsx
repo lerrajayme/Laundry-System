@@ -59,26 +59,23 @@ const LoginForm = () => {
     }
     if (!valid) return;
 
-    try {
-      const response = await axios.post('http://localhost:8000/api/login', {
-        email,
-        password,
-        role: selectedRole
-      });
-
-      if (response.data.success) {
-        navigate(selectedRole === "CUSTOMER" ? "/customer" : "/owner");
-      } else {
-        setLoginError('Invalid credentials. Please try again.');
-      }
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        setLoginError('Invalid credentials. Please try again.');
-      } else {
-        setLoginError('Login failed. Please try again later.');
-      }
+    // Mock login (no backend connection)
+    if (email && password && selectedRole) {
+      console.log("Mock login:", { email, password, role: selectedRole });
+      
+      // Simulate successful login
+      setTimeout(() => {
+        if (selectedRole === "CUSTOMER") {
+          navigate("/customer");
+        } else if (selectedRole === "OWNER") {
+          navigate("/owner");
+        }
+      }, 1000); // Simulate delay
+    } else {
+      setLoginError("Please fill in all fields.");
     }
   };
+
 
   return (
     <div className="login-wrapper">
