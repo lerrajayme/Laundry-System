@@ -321,3 +321,79 @@ button:disabled {
     transition: background-color 5000s ease-in-out 0s;
      /* Optional: keeps the cursor color white */
 }
+
+/* Overlay Styles */
+.overlay-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(76, 175, 80, 0.9);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    animation: fadeInScale 0.3s ease-out;
+    max-width: 80%;
+}
+
+.overlay-message.error {
+    background-color: rgba(244, 67, 54, 0.9);
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.overlay-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.overlay-close-btn {
+    background: white;
+    color: #333;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.5s;
+}
+
+.overlay-close-btn:hover {
+    background: #f5f5f5;
+    transform: translateY(-1px);
+}
+
+.overlay-message p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}

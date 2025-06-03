@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './styles/Signup.css';
-import { FaUser, FaEyeSlash, FaEye, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { MdClose, MdEmail } from "react-icons/md";
+import { FaUser, FaEyeSlash, FaEye, FaChevronDown, FaChevronUp, FaCheck } from "react-icons/fa";
+import { MdClose, MdEmail, MdErrorOutline } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -10,7 +10,6 @@ const Signup = () => {
     
     axios.defaults.baseURL = 'http://localhost:8000';
     axios.defaults.withCredentials = true;
-
 
     // Form states
     const [formData, setFormData] = useState({
@@ -25,6 +24,8 @@ const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [roleOpen, setRoleOpen] = useState(false);
+    const [showOverlay, setShowOverlay] = useState(false);
+    const [overlayMessage, setOverlayMessage] = useState('');
     
     // Error states
     const [errors, setErrors] = useState({
@@ -149,7 +150,6 @@ const Signup = () => {
         setIsSubmitting(true);
         
         try {
-
             // Get CSRF cookie from Sanctum
             await axios.get('/sanctum/csrf-cookie');
 
@@ -165,39 +165,40 @@ const Signup = () => {
                 }
             });
             
-            if (response.status === 201) { // Check HTTP status code
-                alert('Registration successful! Please login.');
-                navigate('/login');
+            if (response.status === 201) {
+                setOverlayMessage('Registration successful! Redirecting to login...');
+                setShowOverlay(true);
+                
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
             } else {
-                setApiError(response.data.message || 'Registration failed');
-                startFadeOut();
+                setOverlayMessage(response.data.message || 'Registration failed');
+                setShowOverlay(true);
             }
         } catch (error) {
             console.error('Signup error:', error);
             
             if (error.response) {
-                // Server responded with error status
-                setApiError(
+                setOverlayMessage(
                     error.response.data?.message ||
                     error.response.data?.error ||
                     'Registration failed. Please try again.'
                 );
             } else {
-                setApiError('Network error. Please check your connection.');
+                setOverlayMessage('Network error. Please check your connection.');
             }
-            startFadeOut();
+            setShowOverlay(true);
         } finally {
             setIsSubmitting(false);
         }
     };
 
-        
-        const startFadeOut = () => {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = setTimeout(() => {
-                setFadeOut(true);
-            }, 500);
-        };
+    // Close overlay
+    const closeOverlay = () => {
+        setShowOverlay(false);
+        setOverlayMessage('');
+    };
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -216,6 +217,27 @@ const Signup = () => {
 
     return (
         <div className="wrapper-signup">
+            {/* Overlay Backdrop and Message */}
+            {showOverlay && (
+                <>
+                    <div className="overlay-backdrop" onClick={closeOverlay}></div>
+                    <div className={`overlay-message ${apiError ? 'error' : ''}`}>
+                        {apiError ? (
+                            <MdErrorOutline className="overlay-icon" />
+                        ) : (
+                            <FaCheck className="overlay-icon" />
+                        )}
+                        <p>{overlayMessage}</p>
+                        <button 
+                            className="overlay-close-btn"
+                            onClick={closeOverlay}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </>
+            )}
+
             <span className="icon-close" onClick={() => navigate('/')}>
                 <MdClose className="x" />
             </span>
