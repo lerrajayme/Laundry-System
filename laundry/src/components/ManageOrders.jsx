@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FaBell, FaUserCircle, FaHeadset } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import { FaRegCircleUser } from 'react-icons/fa6';
 import { TbReport } from "react-icons/tb";
 import { GrBusinessService } from "react-icons/gr";
 import { IoArrowBackCircle } from "react-icons/io5";
@@ -10,6 +9,7 @@ import { Link } from 'react-router-dom';
 import './styles/ManageOrders.css';
 
 const ManageOrders = () => {
+  
     // Order data
   const [orders, setOrders] = useState([
     { id: 'O-001', customerName: 'Lerra Jayme', service: 'Wash only', status: 'Pending' },
@@ -88,9 +88,6 @@ const ManageOrders = () => {
 
       {/* Sidebar */}
       <div className="sidebar-owner">
-        <Link to="/manage-users">
-          <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
-        </Link>
         
         <Link to="/manage-orders">
           <button><GiBeachBag className='side-icon' /> Manage Orders</button>

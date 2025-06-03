@@ -2,7 +2,7 @@ import React from 'react';
 import { FaBell, FaUserCircle, FaHeadset, FaAddressCard } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import { VscFeedback, VscCalendar } from "react-icons/vsc";
+import {  VscCalendar } from "react-icons/vsc";
 import { Link } from 'react-router-dom'; 
 import './styles/CustomerHomePage.css';
 
@@ -50,9 +50,7 @@ const CustomerDashboard = () => {
     <button><GiBeachBag className='side-icon' /> Order History</button>
   </Link>
   
-  <Link to="/feedback">
-    <button><VscFeedback className='side-icon' /> Feedback & Ratings</button>
-  </Link>
+  
 
   <div className="logout">
     <Link to="/customer-logout">

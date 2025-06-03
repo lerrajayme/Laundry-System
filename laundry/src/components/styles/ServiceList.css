@@ -342,3 +342,23 @@
     width: 95%;
   }
 }
+
+.no-services-message {
+  text-align: center;
+  padding: 40px;
+  background-color: transparent;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 800 !important;
+  color: #006071;
+  
+}
+
+.no-services-message p {
+  margin: 8px 0;
+}
+
+.no-services-message svg {
+  opacity: 0.7;
+}

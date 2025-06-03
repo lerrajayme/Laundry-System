@@ -2,7 +2,7 @@ import React from 'react';
 import { FaBell, FaUserCircle, FaHeadset, FaAddressCard, FaMapMarkerAlt } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import { VscFeedback, VscCalendar } from "react-icons/vsc";
+import { VscCalendar } from "react-icons/vsc";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom'; 
 import DENHARTS from '../assets/DENHARTS LAUNDERLAND.jpg';
@@ -167,10 +167,7 @@ const BookService = () => {
   <Link to="/order-history">
     <button><GiBeachBag className='side-icon' /> Order History</button>
   </Link>
-  
-  <Link to="/feedback">
-    <button><VscFeedback className='side-icon' /> Feedback & Ratings</button>
-  </Link>
+
 
   <div className="logout">
     <Link to="/customer-logout">

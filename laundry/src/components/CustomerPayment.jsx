@@ -2,13 +2,29 @@ import React from 'react';
 import { FaBell, FaUserCircle, FaHeadset, FaAddressCard } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from 'react-icons/gi';
-import { VscFeedback, VscCalendar } from 'react-icons/vsc';
+import { VscCalendar } from 'react-icons/vsc';
 import { IoArrowBackCircle } from 'react-icons/io5';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './styles/CustomerPayment.css';
 
+// Date formatting utility function
+const formatDateToMMDDYYYY = (isoDateString) => {
+  if (!isoDateString || isoDateString === "Not specified") return "Not specified";
+  
+  try {
+    const date = new Date(isoDateString);
+    return date.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    });
+  } catch (e) {
+    console.error('Error formatting date:', e);
+    return isoDateString;
+  }
+};
+
 const CustomerPayment = () => {
-  // Retrieve data passed from the booking form or subscription page
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -40,15 +56,11 @@ const CustomerPayment = () => {
     shopDetails
   });
 
-
-  // Move handleBackClick up here
   const handleBackClick = () => {
-    navigate(-1); // This goes back to the previous page in history
-    
+    navigate(-1);
   };
 
-
-  // Merge customer details (from profile or form)
+  // Merge customer details
   const customerInfo = {
     name: customerData.name || "Not provided",
     email: customerData.email || "Not provided",
@@ -56,13 +68,13 @@ const CustomerPayment = () => {
     address: customerData.address || "Not provided"
   };
 
- // Booking information including subscription
+  // Booking information including subscription
   const bookingInfo = {
     shopName: shopDetails.name || "Laundry Shop",
-    pickupDate: bookingData.pickupDate || "Not specified",
+    pickupDate: formatDateToMMDDYYYY(bookingData.pickupDate),
     pickupTime: bookingData.pickupTime || "Not specified",
     services: [
-      ...(bookingData.services || []), // Regular services
+      ...(bookingData.services || []),
       ...(subscriptionData ? [{
         name: `Subscription: ${subscriptionData.planName}`,
         price: subscriptionData.price
@@ -88,10 +100,9 @@ const CustomerPayment = () => {
   const updatedPricing = {
     ...pricing,
     subtotal: updatedSubtotal,
-    bookingFee: pricing.bookingFee ?? 10.00, // fallback 10 if no bookingFee
+    bookingFee: pricing.bookingFee ?? 10.00,
     total: updatedSubtotal + (pricing.bookingFee ?? 10.00)
   };
-
 
   return (
     <div className="dashboard-container">
@@ -113,7 +124,6 @@ const CustomerPayment = () => {
         <Link to="/book-service"><button><VscCalendar className="side-icon" /> Book a Service</button></Link>
         <Link to="/addresscustomer"><button><FaAddressCard className="side-icon" /> Address Management</button></Link>
         <Link to="/order-history"><button><GiBeachBag className="side-icon" /> Order History</button></Link>
-        <Link to="/feedback"><button><VscFeedback className="side-icon" /> Feedback & Ratings</button></Link>
         <div className="logout">
           <Link to="/customer-logout"><button className="logout-btn"><FiLogOut className="side-icon" /> Logout</button></Link>
         </div>
@@ -175,15 +185,15 @@ const CustomerPayment = () => {
             <div className="info-input-container">
               <input
                 type="text"
-                value={bookingData.pickupTime || "Not specified"}
+                value={bookingInfo.pickupTime}
                 readOnly
                 className="info-input"
                 placeholder="Pickup Time"
               />
             </div>
             <div className="services-list">
-              {bookingData.services && bookingData.services.length > 0 ? (
-                bookingData.services.map((service, index) => (
+              {bookingInfo.services && bookingInfo.services.length > 0 ? (
+                bookingInfo.services.map((service, index) => (
                   <div key={index} className="service-item">
                     <span>{service.name} </span>
                     <span>₱{service.price.toFixed(2)}</span>
@@ -219,8 +229,8 @@ const CustomerPayment = () => {
               <Link 
                 to="/pay-with-cash" 
                 state={{ 
-                  customerData,          // original data
-                  bookingData,           // original data
+                  customerData,
+                  bookingData,
                   subscriptionData,
                   pricing: updatedPricing,
                   shopDetails
@@ -228,7 +238,6 @@ const CustomerPayment = () => {
               >
                 <button className="payment-cash">Pay with Cash</button>
               </Link>
-              
             </div>
           </div>
         </div>

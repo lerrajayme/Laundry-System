@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FaBell, FaUserCircle, FaHeadset } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import { FaRegCircleUser } from 'react-icons/fa6';
 import { TbReport } from "react-icons/tb";
 import { GrBusinessService } from "react-icons/gr";
 import { IoArrowBackCircle } from "react-icons/io5";
@@ -10,14 +9,8 @@ import { Link } from 'react-router-dom';
 import './styles/ServiceList.css';
 
 const ServiceList = () => {
-  // Service data
-  const [services, setServices] = useState([
-    { id: 'S-001', serviceName: 'Wash & Fold (Regular Clothes)', price: '150.00', status: 'Active' },
-    { id: 'S-002', serviceName: 'Wash Only (Regular Clothes)', price: '80.00', status: 'Active' },
-    { id: 'S-003', serviceName: 'Wash, Fold & Dry (Regular Clothes)', price: '1500.00', status: 'Active' },
-    { id: 'S-004', serviceName: 'Wash & Fold (Delicate)', price: '70.00', status: 'Active' },
-    { id: 'S-005', serviceName: 'Wash only (Beddings)', price: '150.00', status: 'Active' },
-  ]);
+  // Start with empty services array
+  const [services, setServices] = useState([]);
 
   // Modal states
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -97,7 +90,7 @@ const ServiceList = () => {
       service.id === selectedService.id ? { 
         ...service, 
         ...updatedService,
-        price: updatedService.price // Keep raw value (without ₱)
+        price: updatedService.price
       } : service
     );
     setServices(updatedServices);
@@ -105,23 +98,28 @@ const ServiceList = () => {
   };
 
   // Add new service
-  const handleAddService = () => {
-    const newId = `S-${(100 + Math.floor(Math.random() * 900)).toString()}`;
-    const serviceToAdd = {
-      id: newId,
-      ...newService,
-      price: newService.price // Keep raw value (without ₱)
-    };
-    setServices([...services, serviceToAdd]);
-    setIsAddModalOpen(false);
-    setNewService({
-      serviceName: '',
-      price: '',
-      status: 'Active'
-    });
+const handleAddService = () => {
+  // Generate new ID starting from S-001
+  const newIdNumber = services.length > 0 
+    ? Math.max(...services.map(s => parseInt(s.id.split('-')[1]))) + 1
+    : 1;
+  const newId = `S-${newIdNumber.toString().padStart(3, '0')}`;
+  
+  const serviceToAdd = {
+    id: newId,
+    ...newService,
+    price: newService.price
   };
+  setServices([...services, serviceToAdd]);
+  setIsAddModalOpen(false);
+  setNewService({
+    serviceName: '',
+    price: '',
+    status: 'Active'
+  });
+};
 
-  /// Open delete confirmation modal
+  // Open delete confirmation modal
   const handleDeleteClick = (serviceId) => {
     const service = services.find(s => s.id === serviceId);
     setServiceToDelete(service);
@@ -167,9 +165,6 @@ const ServiceList = () => {
 
       {/* Sidebar */}
       <div className="sidebar-owner">
-        <Link to="/manage-users">
-          <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
-        </Link>
         
         <Link to="/manage-orders">
           <button><GiBeachBag className='side-icon' /> Manage Orders</button>
@@ -209,54 +204,62 @@ const ServiceList = () => {
               </button>
 
               <div className="table-responsive">
-                <table className="service-management-table">
-                  <thead>
-                    <tr>
-                      <th>Service ID</th>
-                      <th>Service Name</th>
-                      <th>Price</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {services.map((service) => (
-                      <tr key={service.id}>
-                        <td>{service.id}</td>
-                        <td>{service.serviceName}</td>
-                        <td>{formatPrice(service.price)}</td>
-                        <td>
-                          <span 
-                            className={`status-badge`}
-                            style={{
-                              backgroundColor: service.status === 'Active' ? 'rgba(0, 128, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)',
-                              color: service.status === 'Active' ? 'green' : 'red',
-                              padding: '5px 10px',
-                              borderRadius: '20px',
-                              fontWeight: '500'
-                            }}
-                          >
-                            {service.status}
-                          </span>
-                        </td>
-                        <td className="actions">
-                          <button 
-                            className="edit-btn-service"
-                            onClick={() => handleEditClick(service.id)}
-                          >
-                            Edit
-                          </button>
-                          <button 
-                            className="delete-btn-service"
-                            onClick={() => handleDeleteClick(service.id)}
-                          >
-                            Delete
-                          </button>
-                        </td>
+                {services.length > 0 ? (
+                  <table className="service-management-table">
+                    <thead>
+                      <tr>
+                        <th>Service ID</th>
+                        <th>Service Name</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {services.map((service) => (
+                        <tr key={service.id}>
+                          <td>{service.id}</td>
+                          <td>{service.serviceName}</td>
+                          <td>{formatPrice(service.price)}</td>
+                          <td>
+                            <span 
+                              className={`status-badge`}
+                              style={{
+                                backgroundColor: service.status === 'Active' ? 'rgba(0, 128, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)',
+                                color: service.status === 'Active' ? 'green' : 'red',
+                                padding: '5px 10px',
+                                borderRadius: '20px',
+                                fontWeight: '500'
+                              }}
+                            >
+                              {service.status}
+                            </span>
+                          </td>
+                          <td className="actions">
+                            <button 
+                              className="edit-btn-service"
+                              onClick={() => handleEditClick(service.id)}
+                            >
+                              Edit
+                            </button>
+                            <button 
+                              className="delete-btn-service"
+                              onClick={() => handleDeleteClick(service.id)}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className="no-services-message">
+                    <GiBeachBag style={{ fontSize: '50px', color: '#006071', marginBottom: '16px' }} />
+                    <p>No services available yet.</p>
+                    <p>Click "Add Service" to create your first service.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

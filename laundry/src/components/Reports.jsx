@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FaBell, FaUserCircle, FaHeadset } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import { FaRegCircleUser } from 'react-icons/fa6';
 import { TbReport } from "react-icons/tb";
 import { GrBusinessService } from "react-icons/gr";
 import { IoArrowBackCircle } from "react-icons/io5";
@@ -12,50 +11,98 @@ import './styles/Reports.css';
 const Reports = () => {
   const [expandedSections, setExpandedSections] = useState({
     financial: {
-    weeklyRevenue: false,
-    monthlyRevenue: false,
-  },
-  orders: {
-    totalOrders: false,
-    completedOrders: false,
-  },
-  service: {
-    ratingsFeedback: false,
-  }
-});
+      weeklyRevenue: false,
+      monthlyRevenue: false,
+    },
+    orders: {
+      totalOrders: false,
+      completedOrders: false,
+    }
+  });
+
+  // Sample order data matching the structure from ManageOrders
+  const [orders] = useState([
+    { id: 'O-001', customerName: 'Lerra Jayme', service: 'Wash only', status: 'Pending' },
+    { id: 'O-002', customerName: 'Jane Baletta', service: 'Wash & Fold', status: 'In Progress' },
+    { id: 'O-003', customerName: 'Melchor Dacup', service: 'Wash, Fold & Dry', status: 'Pending' },
+    { id: 'O-004', customerName: 'Katherine Emoredna', service: 'Wash', status: 'Complete' },
+    { id: 'O-005', customerName: 'Hexel Rana', service: 'Wash, Fold & Dry', status: 'Complete' },
+  ]);
+
+  // Service prices for revenue calculation
+  const [services] = useState([
+    { name: 'Wash only', price: 50 },
+    { name: 'Wash & Fold', price: 75 },
+    { name: 'Wash, Fold & Dry', price: 100 },
+    { name: 'Wash', price: 50 },
+  ]);
+
+  // Calculate financial data based on orders
+  const calculateFinancialData = () => {
+    const now = new Date();
+    const currentWeekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+    const lastWeekStart = new Date(currentWeekStart);
+    lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+    
+    // Get current month and year for filtering
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    
+    // For demo purposes, we'll assume all completed orders are from this week/month
+    const weeklyRevenue = orders
+      .filter(order => order.status === 'Complete')
+      .reduce((sum, order) => {
+        const service = services.find(s => s.name === order.service);
+        return sum + (service ? service.price : 0);
+      }, 0);
+    
+    // For demo, last week revenue is half of current
+    const lastWeekRevenue = weeklyRevenue / 2;
+    
+    const monthlyRevenue = orders
+      .filter(order => {
+        // Only include orders from current month and year
+        const orderDate = new Date(order.date || currentDate); // Fallback to current date if no date
+        return (
+          order.status === 'Complete' &&
+          orderDate.getMonth() === currentMonth &&
+          orderDate.getFullYear() === currentYear
+        );
+      })
+      .reduce((sum, order) => {
+        const service = services.find(s => s.name === order.service);
+        return sum + (service ? service.price : 0);
+      }, 0);
+    
+    return {
+      weeklyRevenue: [
+        { week: 'Current Week', amount: weeklyRevenue },
+        { week: 'Last Week', amount: lastWeekRevenue }
+      ],
+      monthlyRevenue
+    };
+  };
+
+  const calculateOrderData = () => {
+    return {
+      totalOrders: orders.length,
+      completedOrders: orders.filter(order => order.status === 'Complete').length
+    };
+  };
+
+  const financialDetails = calculateFinancialData();
+  const orderDetails = calculateOrderData();
 
   const toggleSection = (category, section) => {
     setExpandedSections(prev => ({
       ...prev,
       [category]: {
-      ...prev[category],
-      [section]: !prev[category][section]
+        ...prev[category],
+        [section]: !prev[category][section]
       }
     }));
   };
-
-  const financialDetails = {
-    weeklyRevenue: [
-      { week: 'May 18-24', amount: 5000 },
-      { week: 'May 11-17', amount: 4800 }
-    ],
-    monthlyRevenue: 20000
-  };
-
-  const orderDetails = {
-    totalOrders: 120,
-    completedOrders: 110
-  };
-
-  const serviceDetails = {
-    ratings: 4.5,
-    feedback: [
-      "Great service!",
-      "Quick turnaround!",
-      "Very satisfied."
-    ]
-  };
-
 
   return (
     <div className="dashboard-container">
@@ -85,9 +132,6 @@ const Reports = () => {
 
       {/* Sidebar */}
       <div className="sidebar-owner">
-        <Link to="/manage-users">
-          <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
-        </Link>
         <Link to="/manage-orders">
           <button><GiBeachBag className='side-icon' /> Manage Orders</button>
         </Link>
@@ -115,7 +159,7 @@ const Reports = () => {
             </Link>
             <h1 className="notification-title">REPORTS</h1>
           </div>
-        <div className="reports-scroll-container">
+          <div className="reports-scroll-container">
             {/* Financial Reports */}
             <div className="report-wrapper">
               <div className="report-header">
@@ -197,40 +241,6 @@ const Reports = () => {
 
               </div>
             </div>
-
-            {/* Service Performance */}
-            <div className="report-wrapper">
-              <div className="report-header">
-                <h2>SERVICE PERFORMANCE</h2>
-              </div>
-              <div className="report-content">
-
-                <div className="report-item">
-                  <span>SERVICE RATINGS & FEEDBACK</span>
-                  <button
-                    className="show-more-btn"
-                    onClick={() => toggleSection('service', 'ratingsFeedback')}
-                  >
-                    {expandedSections.service.ratingsFeedback ? 'Show Less' : 'Show More'}
-                  </button>
-                </div>
-                {expandedSections.service.ratingsFeedback && (
-                  <div className="details-section" style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                    <div>Average Rating: {serviceDetails.ratings} / 5</div>
-                    <div>
-                      Feedback:
-                      <ul>
-                        {serviceDetails.feedback.map((f, i) => (
-                          <li key={i}>{f}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-              </div>
-            </div>
-
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import {
 } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import { VscFeedback, VscCalendar } from "react-icons/vsc";
+import {  VscCalendar } from "react-icons/vsc";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link, useLocation } from 'react-router-dom';
 import './styles/LaundryShopDetails.css';
@@ -78,9 +78,6 @@ const LaundryShopDetails = () => {
         <button><GiBeachBag className='side-icon' /> Order History</button>
       </Link>
       
-      <Link to="/feedback">
-        <button><VscFeedback className='side-icon' /> Feedback & Ratings</button>
-      </Link>
     
       <div className="logout">
         <Link to="/customer-logout">
