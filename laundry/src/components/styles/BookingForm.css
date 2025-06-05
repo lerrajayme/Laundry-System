@@ -125,28 +125,58 @@
   align-items: center;
 }
 
-.custom-datepicker {
-  width: 227%;
-  padding: 10px;
-  padding-right: 35px;
-  font-size: 14px;
-  border: 1px solid #006071;
-  border-radius: 5px;
-  color: #006071;
-  background-color: #fff;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  cursor: pointer;
+
+/* DatePicker Custom Styles */
+.datepicker-container {
+  width: 100%;
 }
 
-.calendar-icon-inside {
-  position: absolute;
-  right: -226px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #006071;
-  pointer-events: none;
+.datepicker-container .MuiOutlinedInput-root {
+  background-color: white !important;
 }
+
+.datepicker-container .MuiInputBase-input {
+  background-color: white !important;
+}
+
+.datepicker-container .MuiFormControl-root {
+  width: 100%;
+}
+
+/* Force white background on DatePicker */
+.MuiTextField-root .MuiOutlinedInput-root {
+  background-color: white !important;
+}
+
+.datepicker-container .MuiInputBase-root {
+  height: 20px !important;
+  font-size: 14px !important;
+}
+
+.datepicker-container .MuiOutlinedInput-notchedOutline {
+  border-color: #ccc;
+}
+
+.datepicker-container .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #006071;
+}
+
+.datepicker-container .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #006071 !important;
+}
+
+.datepicker-container .MuiInputBase-input {
+  padding: 8px 14px !important;
+  color: black;
+}
+
+/* Calendar icon styling */
+.datepicker-container .MuiSvgIcon-root {
+  color: #006071;
+  width: 20px;
+  height: 20px;
+}
+
 
 
 

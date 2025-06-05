@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaBell, FaUserCircle, FaHeadset, FaAddressCard, FaPlus, FaMapMarkerAlt, FaPhone, FaEdit, FaTrash, FaTimes } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
@@ -6,59 +6,95 @@ import { VscCalendar } from "react-icons/vsc";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import './styles/AddressCustomer.css';
+import axios from 'axios';
 
 const AddressCustomer = () => {
-    // STATE MANAGEMENT
-    const [addresses, setAddresses] = useState([
-        { label: 'Home', address: '123 Sampaguita St, Cebu', phone: '+639123456789' },
-        { label: 'Office', address: 'IT Park, Cebu City', phone: '+639876543210' },
-    ]);
-    
-    // MODAL STATES
+    const [addresses, setAddresses] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    
-    // FORM STATES
-    const [newAddress, setNewAddress] = useState({ 
-        label: '', 
-        address: '', 
-        phone: '+63' 
-    });
-    
+
+    const [newAddress, setNewAddress] = useState({ label: '', address: '', phone: '+63' });
+
     const [editData, setEditData] = useState({
         index: null,
         address: { label: '', address: '', phone: '+63' }
     });
 
-    // PHONE NUMBER HANDLING
-    const handlePhoneChange = (e, isEditMode) => {
-        const value = e.target.value;
-        if (value.startsWith('+63') || value === '+6' || value === '+') {
-            if (isEditMode) {
-                setEditData({
-                    ...editData,
-                    address: { ...editData.address, phone: value }
-                });
-            } else {
-                setNewAddress({ ...newAddress, phone: value });
-            }
+    useEffect(() => {
+        fetchAddresses();
+    }, []);
+
+   const fetchAddresses = () => {
+    const token = localStorage.getItem("token");
+
+    axios.get('http://localhost:8000/api/addresses', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
         }
-    };
+    })
+    .then(({ data }) => {
+        setAddresses(data);
+        setLoading(false);
+    })
+    .catch((error) => {
+        console.error("Error fetching addresses:", error);
+        setLoading(false);
+    });
+};
+
+    const handlePhoneChange = (e, isEditMode) => {
+    const value = e.target.value;
+
+    // Allow only +63 followed by digits
+    const regex = /^\+63\d{0,10}$/;
+
+    if (regex.test(value) || value === '+63') {
+        if (isEditMode) {
+            setEditData({
+                ...editData,
+                address: { ...editData.address, phone: value }
+            });
+        } else {
+            setNewAddress({ ...newAddress, phone: value });
+        }
+    }
+};
 
     const handlePhoneKeyDown = (e, isEditMode) => {
-        const phone = isEditMode ? editData.address.phone : newAddress.phone;
-        if (e.key === 'Backspace' && phone.length <= 3 && e.target.selectionStart <= 3) {
-            e.preventDefault();
-        }
-    };
-
+    const phone = isEditMode ? editData.address.phone : newAddress.phone;
+    if (e.key === 'Backspace' && phone.length <= 3 && e.target.selectionStart <= 3) {
+        e.preventDefault();
+    }
+};
+    
     // ADDRESS OPERATIONS
     const handleAddAddress = (e) => {
         e.preventDefault();
+
+        console.log(newAddress.phone.length); 
+
         if (!validateAddress(newAddress)) return;
         
-        setAddresses([...addresses, newAddress]);
+   const token = localStorage.getItem("token");
+
+axios.post('http://localhost:8000/api/addresses', newAddress, {
+    headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json'
+    }
+})
+.then(({ data }) => {
+    setAddresses([...addresses, data]);
+    setNewAddress({ label: '', address: '', phone: '+63' });
+    setShowAddModal(false);
+})
+.catch((err) => {
+    console.error("Add address failed", err);
+});
         setNewAddress({ label: '', address: '', phone: '+63' });
         setShowAddModal(false);
     };
@@ -67,17 +103,47 @@ const AddressCustomer = () => {
         e.preventDefault();
         if (!validateAddress(editData.address)) return;
 
-        const updated = [...addresses];
-        updated[editData.index] = editData.address;
-        setAddresses(updated);
+       const token = localStorage.getItem("token");
+const id = editData.address.id;
+
+axios.put(`http://localhost:8000/api/addresses/${id}`, editData.address, {
+    headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json'
+    }
+})
+.then(({ data }) => {
+    const updated = [...addresses];
+    updated[editData.index] = data;
+    setAddresses(updated);
+    setShowEditModal(false);
+})
+.catch((err) => {
+    console.error("Edit failed", err);
+});
         setShowEditModal(false);
     };
 
     const handleDeleteAddress = () => {
+    const token = localStorage.getItem("token");
+    const id = addresses[editData.index].id;
+
+    axios.delete(`http://localhost:8000/api/addresses/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json'
+        }
+    })
+    .then(() => {
         const updated = addresses.filter((_, i) => i !== editData.index);
         setAddresses(updated);
         setShowDeleteModal(false);
-    };
+    })
+    .catch((err) => {
+        console.error("Delete failed", err);
+        setShowDeleteModal(false);
+    });
+};
 
     // VALIDATION
     const validateAddress = (addr) => {
@@ -89,10 +155,10 @@ const AddressCustomer = () => {
             alert("Please enter a full address");
             return false;
         }
-        if (!addr.phone.startsWith('+63') || addr.phone.length < 12) {
-            alert("Phone must start with +63 and have 9 digits (e.g., +639123456789)");
+        if (!/^\+63\d{10}$/.test(addr.phone)) {
+            alert("Phone must be in the format: +639XXXXXXXXX (11 digits total including +63)");
             return false;
-        }
+        }   
         return true;
     };
 
@@ -166,7 +232,9 @@ const AddressCustomer = () => {
                             </button>
                         </div>
 
-                        {addresses.length === 0 ? (
+                        {loading ? (
+                            <p className='loading-message'>Loading addresses</p>
+                        ) : addresses.length === 0 ? (
                             <p className='noaddress'>No saved addresses yet.</p>
                         ) : (
                             <div className="address-list">
@@ -178,24 +246,21 @@ const AddressCustomer = () => {
                                             <p><FaPhone /> {item.phone}</p>
                                         </div>
                                         <div className="action-icons">
-                                            <FaEdit 
-                                                className="icon edit"
-                                                onClick={() => {
-                                                    setEditData({
-                                                        index,
-                                                        address: { ...item }
-                                                    });
-                                                    setShowEditModal(true);
-                                                }}
-                                            />
-                                            <FaTrash 
-                                                className="icon delete" 
-                                                onClick={() => {
-                                                    setEditData(prev => ({ ...prev, index }));
-                                                    setShowDeleteModal(true);
-                                                }} 
-                                            />
-                                        </div>
+  <FaEdit 
+    className="icon edit"
+    onClick={() => {
+      setEditData({ index, address: { ...item } }); // Set the current item for editing
+      setShowEditModal(true); // Show edit modal
+    }}
+  />
+  <FaTrash 
+    className="icon delete" 
+    onClick={() => {
+      setEditData({ index, address: { ...item } }); // Set the current item for deletion
+      setShowDeleteModal(true); // Show delete modal
+    }} 
+  />
+</div>
                                     </div>
                                 ))}
                             </div>
@@ -218,11 +283,11 @@ const AddressCustomer = () => {
                         <form onSubmit={handleAddAddress}>
                             <div className="form-group">
                                 <label>Address Label (e.g. Home)</label>
-                                <input
+                                 <input
                                     type="text"
-                                    placeholder="Enter address label"
+                                    placeholder="e.g. Home, Work"
                                     value={newAddress.label}
-                                    onChange={(e) => setNewAddress({...newAddress, label: e.target.value})}
+                                    onChange={(e) => setNewAddress({ ...newAddress, label: e.target.value })}
                                     required
                                 />
                             </div>
@@ -240,12 +305,13 @@ const AddressCustomer = () => {
                             <div className="form-group">
                                 <label>Contact Number</label>
                                 <input
+                                
                                     type="tel"
                                     placeholder="+639123456789"
                                     value={newAddress.phone}
                                     onChange={(e) => handlePhoneChange(e, false)}
                                     onKeyDown={(e) => handlePhoneKeyDown(e, false)}
-                                    maxLength={13}
+                                    maxLength={14}
                                     required
                                 />
                             </div>
@@ -279,18 +345,21 @@ const AddressCustomer = () => {
                         </div>
                         
                         <form onSubmit={handleEditAddress}>
-                            <div className="form-group">
-                                <label>Address Label (e.g. Home)</label>
-                                <input
-                                    type="text"
-                                    value={editData.address.label}
-                                    onChange={(e) => setEditData({
+                           <div className="form-group">
+                            <label>Address Label (e.g. Home)</label>
+                            <input
+                                type="text"
+                                placeholder="e.g. Home, Work"
+                                value={editData.address.label}
+                                onChange={(e) =>
+                                    setEditData({
                                         ...editData,
-                                        address: {...editData.address, label: e.target.value}
-                                    })}
-                                    required
-                                />
-                            </div>
+                                        address: { ...editData.address, label: e.target.value },
+                                    })
+                                }
+                                required
+                            />
+                        </div>
                             
                             <div className="form-group">
                                 <label>Full Address</label>
@@ -311,7 +380,7 @@ const AddressCustomer = () => {
                                     value={editData.address.phone}
                                     onChange={(e) => handlePhoneChange(e, true)}
                                     onKeyDown={(e) => handlePhoneKeyDown(e, true)}
-                                    maxLength={13}
+                                    maxLength={14}
                                     required
                                 />
                             </div>

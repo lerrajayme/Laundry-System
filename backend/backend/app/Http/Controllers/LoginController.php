@@ -23,9 +23,7 @@ class LoginController extends Controller
             return response()->json(['message' => 'Invalid login details'], 401);
         }
 
-        if ($user->role !== $request->role) {
-            return response()->json(['message' => 'Invalid role'], 401);
-        }
+        
 
 
         // Create token for user

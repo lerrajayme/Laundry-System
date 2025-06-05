@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaBell, FaUserCircle, FaHeadset} from 'react-icons/fa';
-import { FaRegCircleUser } from 'react-icons/fa6';
 import { FiLogOut } from 'react-icons/fi';
 import { TbReport } from "react-icons/tb";
 import { GrBusinessService } from "react-icons/gr";
@@ -40,10 +39,6 @@ const OwnerDashboard = () => {
 
       {/* Sidebar */}
 <div className="sidebar-owner">
-  <Link to="/manage-users">
-    <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
-  </Link>
-  
   <Link to="/manage-orders">
     <button><GiBeachBag className='side-icon' /> Manage Orders</button>
   </Link>

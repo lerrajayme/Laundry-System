@@ -13,9 +13,9 @@
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const storedState = JSON.parse(localStorage.getItem('customerPaymentState')) || {};
 
   const initialState = useMemo(() => {
+    const storedState = JSON.parse(localStorage.getItem('customerPaymentState')) || {};
     const state = location.state || storedState || {};
 
     // Validate and clean up services data
@@ -28,7 +28,7 @@
     }
 
     return state;
-  }, [location.state, storedState]);
+  }, [location.state]);
 
   const {
     customerData = {},

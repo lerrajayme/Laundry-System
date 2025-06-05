@@ -13,15 +13,16 @@ const faqsData = [
     answer:
       'Simply create an account, select your preferred laundry provider, book a service, and confirm your booking.',
   },
-  {
-    question: 'What subscription plans do you offer?',
-    answer:
-      'We offer different plans based on automatic scheduling, such as twice a week, three times a week, and weekly. Two of the plans provide percentage discounts.',
-  },
+
   {
     question: 'How do I pay for my laundry service?',
     answer:
-      'Payments are made through our platform using online payment through Gcash.',
+      'Payments are made upon pickup of your laundry and we only do cash payments only.',
+  },
+  {
+    question: 'How do I update my profile details?',
+    answer:
+    'When you login, you can see a user icon on the upper right on the navigation bar. Click it and you will be redirected to Profile Page where you can edit your profile.',
   },
   {
     question: 'Are there any hidden fees?',

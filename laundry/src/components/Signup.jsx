@@ -201,19 +201,22 @@ const Signup = () => {
     };
 
     // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (roleRef.current && !roleRef.current.contains(e.target)) {
-                setRoleOpen(false);
-            }
-        };
-        
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            clearTimeout(timeoutRef.current);
-        };
-    }, []);
+   useEffect(() => {
+    const handleClickOutside = (e) => {
+        if (roleRef.current && !roleRef.current.contains(e.target)) {
+            setRoleOpen(false);
+        }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    const timeoutId = timeoutRef.current; // 🔐 store current timeout ID
+
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        clearTimeout(timeoutId); // ✅ safe cleanup
+    };
+}, []);
 
     return (
         <div className="wrapper-signup">

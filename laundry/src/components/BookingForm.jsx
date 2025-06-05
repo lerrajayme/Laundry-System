@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { FaBell, FaUserCircle, FaHeadset, FaAddressCard, FaChevronDown, FaRegCalendarAlt, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
+import { FaBell, FaUserCircle, FaHeadset, FaAddressCard, FaChevronDown, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from 'react-icons/gi';
 import {  VscCalendar } from 'react-icons/vsc';
@@ -60,20 +61,29 @@ const BookingForm = () => {
   }, [shop]);
 
   useEffect(() => {
-    const fetchSavedAddresses = async () => {
-      try {
-        const response = await axios.get('/api/customer/addresses');
-        setFormData(prev => ({
-          ...prev,
-          savedAddresses: response.data.addresses || [],
-        }));
-      } catch (error) {
-        console.error('Failed to fetch addresses:', error);
-      }
-    };
+  const fetchSavedAddresses = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    fetchSavedAddresses();
-  }, []);
+      const response = await axios.get('http://localhost:8000/api/addresses', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
+
+      setFormData(prev => ({
+        ...prev,
+        savedAddresses: response.data || [],
+      }));
+    } catch (error) {
+      console.error('Failed to fetch addresses:', error);
+    }
+  };
+
+  fetchSavedAddresses();
+}, []);
+
 
   const [addressDropdownOpen, setAddressDropdownOpen] = useState(false);
   const [pickupTimeDropdownOpen, setPickupTimeDropdownOpen] = useState(false);
@@ -132,18 +142,6 @@ const BookingForm = () => {
     setAddressDropdownOpen(false);
     setPickupTimeDropdownOpen(false);
   };
-
-  const CustomDateInput = React.forwardRef(({ value, onClick }, ref) => (
-    <div className="datepicker-wrapper" onClick={onClick} ref={ref}>
-      <input
-        className="custom-datepicker"
-        value={value}
-        readOnly
-        placeholder="MM/DD/YYYY"
-      />
-      <FaRegCalendarAlt className="calendar-icon-inside" />
-    </div>
-  ));
 
   const handleSelectAddress = (address) => {
     setFormData(prev => ({ ...prev, address: address }));
@@ -283,47 +281,70 @@ const BookingForm = () => {
                 />
               </div>
 
-              <div className="form-row">
-                <label> Address <span className="required">*</span></label>
-                <div className="address-dropdown">
-                  <div
-                    className="address-headers"
-                    onClick={() => {
-                      setAddressDropdownOpen(!addressDropdownOpen);
-                      setPickupTimeDropdownOpen(false);
-                    }}
-                  >
-                    <span>{formData.address || '--Select Address--'}</span>
-                    <FaChevronDown className="chevron-icon" />
-                  </div>
-                  {addressDropdownOpen && (
-                    <ul className="dropdown-list">
-                      {formData.savedAddresses.map((savedAddress, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleSelectAddress(savedAddress)}
-                        >
-                          {savedAddress}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+            <div className="form-row">
+              <label> Address <span className="required">*</span></label>
+              <div className="address-dropdown">
+                <div
+                  className="address-headers"
+                  onClick={() => {
+                    setAddressDropdownOpen(!addressDropdownOpen);
+                    setPickupTimeDropdownOpen(false);
+                  }}
+                >
+                  {/* Show selected address label + address, or placeholder if none */}
+                  <span>
+                    {formData.address
+                      ? `${formData.address.label} - ${formData.address.address}`
+                      : '--Select Address--'}
+                  </span>
+                  <FaChevronDown className="chevron-icon" />
                 </div>
-              </div>
+
+              {addressDropdownOpen && (
+                <ul className="dropdown-list">
+                  {formData.savedAddresses.map((savedAddress, index) => (
+                    <li
+                      key={savedAddress.id || index}
+                      onClick={() => handleSelectAddress(savedAddress)}
+                    >
+                      {savedAddress.label} - {savedAddress.address}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
 
               <div className="form-row">
                 <label> Pickup Date <span className="required">*</span></label>
-                <DatePicker
-                  selected={formData.pickupDate ? new Date(formData.pickupDate) : null}
-                  onChange={(date) =>
-                    setFormData(prev => ({
-                      ...prev,
-                      pickupDate: date
-                    }))
-                  }
-                  dateFormat="MM/dd/yyyy"
-                  customInput={<CustomDateInput />}
-                />
+                <div className="datepicker-container">
+                  <DatePicker
+                    value={formData.pickupDate ? dayjs(formData.pickupDate) : null}
+                    onChange={(newDate) => {
+                      setFormData(prev => ({ ...prev, pickupDate: newDate ? newDate.toDate() : null }));
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            backgroundColor: 'white', // ✅ Force white bg
+                            height: '40px',
+                            '& fieldset': { borderColor: '#ccc' },
+                            '&:hover fieldset': { borderColor: '#006071' },
+                            '&.Mui-focused fieldset': { borderColor: '#006071' },
+                          },
+                          '& .MuiInputBase-input': {
+                            padding: '8px 14px',
+                            fontSize: '14px',
+                            backgroundColor: 'white !important', // ✅ Ensure input area is white
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </div>
               </div>
 
               <div className="form-row">

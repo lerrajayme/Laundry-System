@@ -1,6 +1,6 @@
 .login-wrapper {
     width: 450px;
-    height: 500px;
+    height: 450px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     backdrop-filter: blur(30px);
@@ -10,7 +10,7 @@
     color: white;
     position: fixed;
     right: 3.5%;
-    top: 21%;
+    top: 25%;
     align-items: center;
     overflow: hidden;
     transition: opacity 0.3s ease-in-out;

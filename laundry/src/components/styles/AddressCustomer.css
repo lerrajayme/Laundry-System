@@ -505,3 +505,12 @@ background: #d1d1d1;
   transform: scale(1.1);
   color: #004d5a;
 }
+
+.loading-message {
+  font-size: 26px;
+  color: #006071;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
