@@ -2,7 +2,7 @@ import React from 'react';
 import { FaBell, FaUserCircle, FaHeadset, FaAddressCard } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
-import {  VscCalendar } from "react-icons/vsc";
+import { VscCalendar } from "react-icons/vsc";
 import { Link, useNavigate } from 'react-router-dom';
 import './styles/CustomerLogout.css';
 
@@ -10,12 +10,14 @@ const CustomerLogout = () => {
   const navigate = useNavigate();
 
   const handleConfirmLogout = () => {
-    // Do logout logic here
-    navigate('/');
+    // Redirect to login page
+    navigate('/login');
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
   };
 
   const handleCancel = () => {
-    navigate('/customer'); // balik to dashboard kung cancel
+    navigate('/customer'); // Return to dashboard if cancel
   };
 
   return (

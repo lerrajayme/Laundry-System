@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { FaBell, FaUserCircle, FaHeadset } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { GiBeachBag } from "react-icons/gi";
@@ -6,30 +6,32 @@ import { TbReport } from "react-icons/tb";
 import { GrBusinessService } from "react-icons/gr";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './styles/Reports.css';
 
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 const Reports = () => {
-  const [expandedSections, setExpandedSections] = useState({
-    financial: {
-      weeklyRevenue: false,
-      monthlyRevenue: false,
-    },
-    orders: {
-      totalOrders: false,
-      completedOrders: false,
-    }
-  });
-
-  // Sample order data matching the structure from ManageOrders
   const [orders] = useState([
-    { id: 'O-001', customerName: 'Lerra Jayme', service: 'Wash only', status: 'Pending' },
-    { id: 'O-002', customerName: 'Jane Baletta', service: 'Wash & Fold', status: 'In Progress' },
-    { id: 'O-003', customerName: 'Melchor Dacup', service: 'Wash, Fold & Dry', status: 'Pending' },
-    { id: 'O-004', customerName: 'Katherine Emoredna', service: 'Wash', status: 'Complete' },
-    { id: 'O-005', customerName: 'Hexel Rana', service: 'Wash, Fold & Dry', status: 'Complete' },
-  ]);
+  { id: 'O-001', customerName: 'Lerra Jayme', service: 'Wash only', status: 'Pending', date: '2025-06-01' },
+  { id: 'O-002', customerName: 'Jane Baletta', service: 'Wash & Fold', status: 'In Progress', date: '2025-06-02' },
+  { id: 'O-003', customerName: 'Melchor Dacup', service: 'Wash, Fold & Dry', status: 'Pending', date: '2025-06-01' },
+  { id: 'O-004', customerName: 'Katherine Emoredna', service: 'Wash', status: 'Complete', date: '2025-05-28' },
+  { id: 'O-005', customerName: 'Hexel Rana', service: 'Wash, Fold & Dry', status: 'Complete', date: '2025-05-20' },
+  { id: 'O-006', customerName: 'John Doe', service: 'Wash only', status: 'Complete', date: '2025-06-03' },
+  { id: 'O-007', customerName: 'Jane Smith', service: 'Wash & Fold', status: 'Complete', date: '2025-06-04' },
+]);
 
-  // Service prices for revenue calculation
+
   const [services] = useState([
     { name: 'Wash only', price: 50 },
     { name: 'Wash & Fold', price: 75 },
@@ -37,71 +39,145 @@ const Reports = () => {
     { name: 'Wash', price: 50 },
   ]);
 
-  // Calculate financial data based on orders
   const calculateFinancialData = () => {
     const now = new Date();
+
     const currentWeekStart = new Date(now.setDate(now.getDate() - now.getDay()));
     const lastWeekStart = new Date(currentWeekStart);
     lastWeekStart.setDate(lastWeekStart.getDate() - 7);
-    
-    // Get current month and year for filtering
+
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
-    
-    // For demo purposes, we'll assume all completed orders are from this week/month
-    const weeklyRevenue = orders
+
+    const lastMonthDate = new Date(currentDate);
+    lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
+    const lastMonth = lastMonthDate.getMonth();
+    const lastMonthYear = lastMonthDate.getFullYear();
+
+    const results = orders
       .filter(order => order.status === 'Complete')
-      .reduce((sum, order) => {
+      .reduce((acc, order) => {
+        const orderDate = new Date(order.date || currentDate);
         const service = services.find(s => s.name === order.service);
-        return sum + (service ? service.price : 0);
-      }, 0);
-    
-    // For demo, last week revenue is half of current
-    const lastWeekRevenue = weeklyRevenue / 2;
-    
-    const monthlyRevenue = orders
-      .filter(order => {
-        // Only include orders from current month and year
-        const orderDate = new Date(order.date || currentDate); // Fallback to current date if no date
-        return (
-          order.status === 'Complete' &&
-          orderDate.getMonth() === currentMonth &&
-          orderDate.getFullYear() === currentYear
-        );
-      })
-      .reduce((sum, order) => {
-        const service = services.find(s => s.name === order.service);
-        return sum + (service ? service.price : 0);
-      }, 0);
-    
+        const amount = service ? service.price : 0;
+
+        acc.weeklyRevenue += amount;
+
+        if (orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear) {
+          acc.currentMonth += amount;
+        } else if (orderDate.getMonth() === lastMonth && orderDate.getFullYear() === lastMonthYear) {
+          acc.lastMonth += amount;
+        }
+
+        return acc;
+      }, {
+        weeklyRevenue: 0,
+        currentMonth: 0,
+        lastMonth: 0
+      });
+
     return {
       weeklyRevenue: [
-        { week: 'Current Week', amount: weeklyRevenue },
-        { week: 'Last Week', amount: lastWeekRevenue }
+        { week: 'Current Week', amount: results.weeklyRevenue },
+        { week: 'Last Week', amount: results.weeklyRevenue / 2 }
       ],
-      monthlyRevenue
+      monthlyRevenue: results.currentMonth,
+      lastMonthRevenue: results.lastMonth
     };
   };
 
-  const calculateOrderData = () => {
-    return {
-      totalOrders: orders.length,
-      completedOrders: orders.filter(order => order.status === 'Complete').length
-    };
+  const calculateServiceDistribution = () => {
+    const serviceCounts = {};
+
+    orders.forEach(order => {
+      if (!serviceCounts[order.service]) {
+        serviceCounts[order.service] = 0;
+      }
+      serviceCounts[order.service]++;
+    });
+
+    return serviceCounts;
   };
 
   const financialDetails = calculateFinancialData();
-  const orderDetails = calculateOrderData();
+  const serviceDistribution = calculateServiceDistribution();
 
-  const toggleSection = (category, section) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [section]: !prev[category][section]
+  const weeklyRevenueData = {
+    labels: ['Weekly Revenue'],
+    datasets: financialDetails.weeklyRevenue.map((item, index) => {
+      const colors = [
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 99, 132, 0.5)',
+      ];
+      const borderColors = [
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)',
+      ];
+
+      return {
+        label: item.week,
+        data: [item.amount],
+        backgroundColor: colors[index % colors.length],
+        borderColor: borderColors[index % borderColors.length],
+        borderWidth: 1,
+      };
+    }),
+  };
+
+  const monthlyRevenueData = {
+    labels: ['Monthly Comparison'],
+    datasets: [
+      {
+        label: 'Current Month',
+        data: [financialDetails.monthlyRevenue],
+        backgroundColor: 'rgba(75, 192, 192, 0.5)'
+      },
+      {
+        label: 'Last Month',
+        data: [financialDetails.lastMonthRevenue],
+        backgroundColor: 'rgba(153, 102, 255, 0.5)'
       }
-    }));
+    ]
+  };
+
+  const serviceDistributionData = {
+    labels: ['Service Distribution'],
+    datasets: Object.keys(serviceDistribution).map((service, index) => {
+      const colors = [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+      ];
+      const borderColors = [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+      ];
+
+      return {
+        label: service,
+        data: [serviceDistribution[service]],
+        backgroundColor: colors[index % colors.length],
+        borderColor: borderColors[index % borderColors.length],
+        borderWidth: 1,
+      };
+    }),
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: '',
+      },
+    },
   };
 
   return (
@@ -166,85 +242,35 @@ const Reports = () => {
                 <h2>FINANCIAL REPORT</h2>
               </div>
               <div className="report-content">
-
-                <div className="report-item">
-                  <span>WEEKLY REVENUE</span>
-                  <button
-                    className="show-more-btn"
-                    onClick={() => toggleSection('financial', 'weeklyRevenue')}
-                  >
-                    {expandedSections.financial.weeklyRevenue ? 'Show Less' : 'Show More'}
-                  </button>
+                <div className="chart-container">
+                  <h3>Weekly Revenue</h3>
+                  <Bar data={weeklyRevenueData} options={chartOptions} />
                 </div>
-                {expandedSections.financial.weeklyRevenue && (
-                  <div className="details-section" style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                    {financialDetails.weeklyRevenue.map((item, i) => (
-                      <div key={i}>{item.week}: ₱{item.amount.toLocaleString()}</div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="report-item">
-                  <span>MONTHLY REVENUE</span>
-                  <button
-                    className="show-more-btn"
-                    onClick={() => toggleSection('financial', 'monthlyRevenue')}
-                  >
-                    {expandedSections.financial.monthlyRevenue ? 'Show Less' : 'Show More'}
-                  </button>
+                
+                <div className="chart-container">
+                  <h3>Monthly Revenue</h3>
+                  <Bar data={monthlyRevenueData} options={chartOptions} />
                 </div>
-                {expandedSections.financial.monthlyRevenue && (
-                  <div className="details-section" style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                    <div>₱{financialDetails.monthlyRevenue.toLocaleString()}</div>
-                  </div>
-                )}
-
               </div>
             </div>
 
             {/* Order Summaries */}
             <div className="report-wrapper">
               <div className="report-header">
-                <h2>ORDER SUMMARIES</h2>
+                <h2>SERVICE DISTRIBUTION</h2>
               </div>
               <div className="report-content">
-
-                <div className="report-item">
-                  <span>TOTAL ORDERS</span>
-                  <button
-                    className="show-more-btn"
-                    onClick={() => toggleSection('orders', 'totalOrders')}
-                  >
-                    {expandedSections.orders.totalOrders ? 'Show Less' : 'Show More'}
-                  </button>
+                <div className="chart-container">
+                  <h3>Orders by Service Type</h3>
+                  <Bar data={serviceDistributionData} options={chartOptions} />
                 </div>
-                {expandedSections.orders.totalOrders && (
-                  <div className="details-section" style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                    <div>{orderDetails.totalOrders} orders</div>
-                  </div>
-                )}
-
-                <div className="report-item">
-                  <span>COMPLETED ORDERS</span>
-                  <button
-                    className="show-more-btn"
-                    onClick={() => toggleSection('orders', 'completedOrders')}
-                  >
-                    {expandedSections.orders.completedOrders ? 'Show Less' : 'Show More'}
-                  </button>
-                </div>
-                {expandedSections.orders.completedOrders && (
-                  <div className="details-section" style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-                    <div>{orderDetails.completedOrders} orders</div>
-                  </div>
-                )}
-
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  
   );
 };
 

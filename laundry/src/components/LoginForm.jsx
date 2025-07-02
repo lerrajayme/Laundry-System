@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/LoginForm.css';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdClose, MdEmail } from "react-icons/md";
@@ -11,8 +11,21 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  // Check for saved credentials on component mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    const savedPassword = localStorage.getItem('rememberedPassword');
+    
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(true);
+    }
+  }, []);
 
   const togglePassword = () => setShowPassword(!showPassword);
   const handleClose = () => navigate('/');
@@ -37,15 +50,25 @@ const LoginForm = () => {
       });
 
       if (response.data.success) {
+        // Navigate based on the role from the response
+        const userRole = response.data.user.role;
+        navigate(userRole === "CUSTOMER" ? "/customer" : "/owner");
+        
         // Store user data and token
         localStorage.setItem('user', JSON.stringify(response.data.user));
         if (response.data.access_token) {
           localStorage.setItem('token', response.data.access_token);
         }
-
-        // Navigate based on the role from the response
-        const userRole = response.data.user.role; // Assuming the backend returns the role
-        navigate(userRole === "CUSTOMER" ? "/customer" : "/owner");
+        
+        // Handle remember me functionality
+        if (rememberMe) {
+          localStorage.setItem('rememberedEmail', email);
+          localStorage.setItem('rememberedPassword', password);
+        } else {
+          localStorage.removeItem('rememberedEmail');
+          localStorage.removeItem('rememberedPassword');
+        }
+      
       } else {
         setLoginError('Invalid credentials. Please try again.');
       }
@@ -99,7 +122,14 @@ const LoginForm = () => {
         </div>
 
         <div className="remember-forgot">
-          <label><input type="checkbox" />Remember me</label>
+          <label>
+            <input 
+              type="checkbox" 
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            Remember me
+          </label>
           <Link to="/forgot-password">Forgot password?</Link>
         </div>
         

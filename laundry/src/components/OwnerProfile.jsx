@@ -1,23 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaBell, FaUserCircle, FaHeadset, FaUser, FaEnvelope, FaPhone, FaHome } from 'react-icons/fa';
 import { FiLogOut, FiEdit } from 'react-icons/fi';
 import { GrBusinessService } from "react-icons/gr";
 import { GiBeachBag } from "react-icons/gi";
-import { FaRegCircleUser } from "react-icons/fa6";
 import { TbReport } from "react-icons/tb";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { Link } from 'react-router-dom'; 
 import userProfile from '../assets/ULOL.png'; 
 import './styles/OwnerProfile.css';
+import axios from 'axios';
 
 const OwnerProfile = () => {
   const [image, setImage] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [phone, setPhone] = useState('+63');
+  const [shopAddress, setShopAddress] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    const storedOwner = localStorage.getItem('user');
+    if (storedOwner) {
+      const parsedOwner = JSON.parse(storedOwner);
+      setOwner(parsedOwner);
+      setPhone(parsedOwner.phone_number || '+63');
+      setShopAddress(parsedOwner.shop_address || '');
+    }
+  }, []);
+
+  if (!owner) {
+    return <p>Please log in to see your profile.</p>;
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+    }
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    const regex = /^\+63\d{0,10}$/;
+
+    if (regex.test(value) || value === '+63') {
+      setPhone(value);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    if (!/^\+63\d{10}$/.test(phone)) {
+      alert("Phone must be in the format: +639XXXXXXXXX (11 digits total including +63)");
+      return;
+    }
+
+    if (!shopAddress.trim()) {
+      alert("Please enter your laundry shop address");
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put('http://localhost:8000/api/owner/profile', {
+        name: owner.name,
+        email: owner.email,
+        phone_number: phone,
+        shop_address: shopAddress
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = response.data;
+      setOwner(data.user);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      alert('Profile updated successfully');
+    } catch (error) {
+      alert('Error updating profile: ' + (error.response?.data?.message || error.message));
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -49,37 +115,32 @@ const OwnerProfile = () => {
         </div>
       </div>
 
-        {/* Sidebar */}
-    <div className="sidebar-owner">
-      <Link to="/manage-users">
-        <button><FaRegCircleUser className='side-icon' /> Manage Users</button>
-      </Link>
-      
-      <Link to="/manage-orders">
-        <button><GiBeachBag className='side-icon' /> Manage Orders</button>
-      </Link>
-      
-      <Link to="/reports">
-        <button><TbReport className='side-icon' /> Reports</button>
-      </Link>
-      
-      <Link to="/service-list">
-        <button><GrBusinessService className='side-icon' /> Service List</button>
-      </Link>
-    
-      <div className="logout">
-        <Link to="/owner-logout">
-          <button className="logout-btn">
-            <FiLogOut className='side-icon' /> Logout
-          </button>
+      {/* Sidebar */}
+      <div className="sidebar-owner">
+        <Link to="/manage-orders">
+          <button><GiBeachBag className='side-icon' /> Manage Orders</button>
         </Link>
+        
+        <Link to="/reports">
+          <button><TbReport className='side-icon' /> Reports</button>
+        </Link>
+        
+        <Link to="/service-list">
+          <button><GrBusinessService className='side-icon' /> Service List</button>
+        </Link>
+      
+        <div className="logout">
+          <Link to="/owner-logout">
+            <button className="logout-btn">
+              <FiLogOut className='side-icon' /> Logout
+            </button>
+          </Link>
+        </div>
       </div>
-    </div>
-    
 
       {/* Main Content */}
       <div className="owner-profile">
-         <div className="profile-section">
+        <div className="profile-section">
           <div className="profile-header">
             <Link to="/owner">
               <IoArrowBackCircle className="back-button" title="Back to Home" />
@@ -93,8 +154,7 @@ const OwnerProfile = () => {
               alt="Profile" 
             />
             <label className="edit-icon">
-            <FiEdit />
-
+              <FiEdit />
               <input 
                 type="file" 
                 accept="image/*" 
@@ -104,47 +164,71 @@ const OwnerProfile = () => {
             </label>
           </div>
 
-    {/* Form */}
-    <div className="profile-form">
-      <div className="input-group">
-        <label>Full Name</label>
-        <div className="input-wrapper">
-          <input type="text" placeholder="Your Name" />
-          <FaUser className="input-icon" />
-        </div>
-      </div>
+          {/* Form */}
+          <div className="profile-form">
+            <div className="input-group">
+              <label>Full Name</label>
+              <div className="input-wrapper">
+                <input 
+                  type="text" 
+                  value={owner.name || ''} 
+                  onChange={(e) => setOwner({...owner, name: e.target.value})} 
+                />
+                <FaUser className="input-icon" />
+              </div>
+            </div>
 
-      <div className="input-group">
-        <label>Email Account</label>
-        <div className="input-wrapper">
-          <input type="email" placeholder="Example@gmail.com" />
-          <FaEnvelope className="input-icon" />
-        </div>
-      </div>
+            <div className="input-group">
+              <label>Email Account</label>
+              <div className="input-wrapper">
+                <input 
+                  type="email" 
+                  value={owner.email || ''} 
+                  onChange={(e) => setOwner({...owner, email: e.target.value})} 
+                />
+                <FaEnvelope className="input-icon" />
+              </div>
+            </div>
 
-      <div className="input-group">
-        <label>Phone Number</label>
-        <div className="input-wrapper">
-          <input type="text" placeholder="Add number" />
-          <FaPhone className="input-icon" />
-        </div>
-      </div>
+            <div className="input-group">
+              <label>Phone Number</label>
+              <div className="input-wrapper">
+                <input 
+                  type="text" 
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  placeholder="+63xxxxxxxxxx"
+                />
+                <FaPhone className="input-icon" />
+              </div>
+            </div>
 
-      <div className="input-group">
-        <label>Laundry Shop Address</label>
-        <div className="input-wrapper">
-          <input type="text" placeholder="Your address"/>
-          <FaHome className="input-icon" />
-        </div>
-      </div>
+            <div className="input-group">
+              <label>Laundry Shop Address</label>
+              <div className="input-wrapper">
+                <input 
+                  type="text" 
+                  value={shopAddress}
+                  onChange={(e) => setShopAddress(e.target.value)}
+                  placeholder="Your shop address"
+                />
+                <FaHome className="input-icon" />
+              </div>
+            </div>
 
             <div className="button-container">
-            <button className="save-button">SAVE CHANGES</button>
+              <button 
+                className="save-button" 
+                onClick={handleSaveChanges}
+                disabled={saving}
+              >
+                {saving ? 'Saving...' : 'SAVE CHANGES'}
+              </button>
             </div>
           </div>
         </div>
       </div>
-  </div>
+    </div>
   );
 };
 

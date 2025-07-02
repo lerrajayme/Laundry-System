@@ -12,7 +12,9 @@ const OwnerLogout = () => {
 
   const handleConfirmLogout = () => {
     // Do logout logic here
-    navigate('/');
+      navigate('/login');
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
   };
 
   const handleCancel = () => {

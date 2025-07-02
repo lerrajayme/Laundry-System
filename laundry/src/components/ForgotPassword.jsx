@@ -1,22 +1,56 @@
 import React, { useState } from 'react';
 import { MdEmail, MdClose } from "react-icons/md";
 import './styles/ForgotPassword.css';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate for programmatic navigation
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+function genOTP()
+{
+  let token = '';
+  let numbers = '0123456789';
+  for (let i = 1; i <= 6; ++i)
+  {
+    token += numbers[Math.floor(Math.random() * (0 + numbers.length - 1) + 0)];
+  }
+  if (token.length !== 6) genOTP() // generate again
+  else return token
+}
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const navigate = useNavigate();  // Initialize navigate
+  const [error, setError] = useState(''); // ✅ FIXED
+  const navigate = useNavigate();
 
   const handleClose = () => {
     navigate('/');
   };
   
-  // Handle form submit to trigger browser validation
-  const handleContinue = (e) => {
-    e.preventDefault(); // Prevent default behavior so you can validate
-    if (email) {
-      // If email is filled, continue to the next page
-      navigate("/verify-code");  // Use navigate for programmatic redirection
+  const handleContinue = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      let otp = genOTP()
+      // 1. Get user by email
+      const userResponse = await axios.get(`http://localhost:8000/api/user/${email}`);
+      const name = userResponse.data.name;
+      // const response2 = await axios.get('http://localhost:8000/api/userlist')
+      const response2 = await axios.post('http://localhost:8000/api/forgot', {
+        company: 'Laundry Wise Co. Account',
+        email: email,
+        website: 'Laundry Wise Co.',
+        website_title: '<p style="color: #006071;">Laundry Wise Co.</p>',
+        body: `
+            <p>
+            Hi <b style="font-size: 20px">${name}</b>,<br>
+            Here is your OTP for account recovery: <b style="font-size: 20px">${otp}</b>
+            </p>
+          `
+      })
+      navigate("/verify-code")
+      localStorage.setItem('_ajkshdas_',otp)
+    } catch (err) {
+      console.error("AXIOS ERROR:", err.response?.data || err.message || err);
+      setError("Something went wrong. Please try again.");
     }
   };
 
@@ -34,12 +68,18 @@ const ForgotPassword = () => {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError('');
+            }}
             required
           />
           <MdEmail className="icon" />
         </div>
 
+        {/* ✅ Show error if exists */}
+        {error && <p className="error-text">{error}</p>}
+        
         <button type="submit" className="link-button">
           Continue
         </button>

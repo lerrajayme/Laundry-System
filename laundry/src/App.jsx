@@ -32,6 +32,7 @@ import ManageUsers from './components/ManageUsers';
 import ManageOrders from  './components/ManageOrders';
 import Reports from './components/Reports';
 import ServiceList from './components/ServiceList';
+import AdminPage from './components/Admin';
 import './App.css';
 
 
@@ -40,7 +41,7 @@ function AppWrapper() {
   const location = useLocation();
   
   // Add paths where you want the Content to show
-  const showContentOn = ['/', '/login', '/register', '/forgot-password', '/verify-code', '/resetpassword',
+  const showContentOn = ['/', '/login', '/register', '/forgot-password', '/verify-code', '/reset',
     '/password-reset-success'];
   const showContent = showContentOn.includes(location.pathname);
 
@@ -64,6 +65,9 @@ function AppWrapper() {
       <div className="page-content">
         <Routes>
 
+          {/*Admin*/}
+          <Route path="/admin" element={<AdminPage />} />
+
           {/* Customer Sidebar & Navbar*/}
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/customer-support" element={<CustomerSupport />} />
@@ -78,10 +82,11 @@ function AppWrapper() {
           <Route path="/register" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-code" element={<VerifyCode />} /> 
-          <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="/reset" element={<ResetPassword />} />
           <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
           <Route path="/about" element={<About />} />
           <Route path="/faqs" element={<FAQs />} />
+          
          
          {/*Owner*/}
          <Route path="/owner" element={<OwnerDashboard />} />
