@@ -52,7 +52,15 @@ const LoginForm = () => {
       if (response.data.success) {
         // Navigate based on the role from the response
         const userRole = response.data.user.role;
-        navigate(userRole === "CUSTOMER" ? "/customer" : "/owner");
+        
+            if (userRole === "ADMIN") {
+            navigate("/admin"); // Redirect to admin page
+          } else if (userRole === "OWNER") {
+            navigate("/owner"); // Redirect to owner page
+          } else {
+            navigate("/customer"); // Default to customer page
+          }
+        
         
         // Store user data and token
         localStorage.setItem('user', JSON.stringify(response.data.user));

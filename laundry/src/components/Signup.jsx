@@ -17,7 +17,8 @@ const Signup = () => {
         email: '',
         password: '',
         confirmPassword: '',
-        role: ''
+        role: '',
+        adminSecret: ''
     });
     
     // UI states
@@ -33,7 +34,8 @@ const Signup = () => {
         email: '',
         password: '',
         confirmPassword: '',
-        role: ''
+        role: '',
+        adminSecret: ''
     });
     
     const [apiError, setApiError] = useState('');
@@ -91,7 +93,7 @@ const Signup = () => {
 
     // Role selection
     const selectRole = (role) => {
-        setFormData(prev => ({ ...prev, role }));
+        setFormData(prev => ({ ...prev, role, adminSecret: role === 'ADMIN' ? prev.adminSecret : '' }));
         setRoleOpen(false);
         if (errors.role) {
             setErrors(prev => ({ ...prev, role: '' }));
@@ -108,6 +110,11 @@ const Signup = () => {
         // Validate form
         let hasErrors = false;
         const newErrors = { ...errors };
+
+        if (formData.role === 'ADMIN' && !formData.adminSecret) {
+            setErrors(prev => ({ ...prev, adminSecret: 'Admin secret key is required' }));
+            return;
+        }
         
         if (!formData.fullName.trim()) {
             newErrors.fullName = 'Full name is required';
@@ -129,13 +136,16 @@ const Signup = () => {
             newErrors.password = 'Password must be 8-20 characters';
             hasErrors = true;
         }
-        
-        if (!formData.confirmPassword) {
-            newErrors.confirmPassword = 'Please confirm your password';
-            hasErrors = true;
-        } else if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match';
-            hasErrors = true;
+     
+        // Inside handleSubmit, before submission:
+        if (formData.role !== 'ADMIN') {
+            if (!formData.confirmPassword) {
+                newErrors.confirmPassword = 'Please confirm your password';
+                hasErrors = true;
+            } else if (formData.password !== formData.confirmPassword) {
+                newErrors.confirmPassword = 'Passwords do not match';
+                hasErrors = true;
+            }
         }
         
         if (!formData.role) {
@@ -153,13 +163,16 @@ const Signup = () => {
             // Get CSRF cookie from Sanctum
             await axios.get('/sanctum/csrf-cookie');
 
-            const response = await axios.post('http://localhost:8000/api/register', {
+            const payload = {
                 name: formData.fullName,
                 email: formData.email,
                 password: formData.password,
-                password_confirmation: formData.confirmPassword,
-                role: formData.role
-            }, {
+                role: formData.role.toLowerCase(),
+                ...(formData.role === 'ADMIN' && { admin_secret: formData.adminSecret }),
+                ...(formData.role !== 'ADMIN' && { password_confirmation: formData.confirmPassword })
+            };
+            
+            const response = await axios.post('http://localhost:8000/api/register', payload, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -297,10 +310,31 @@ const Signup = () => {
                         <ul className="role-options">
                             <li onClick={() => selectRole("CUSTOMER")}>CUSTOMER</li>
                             <li onClick={() => selectRole("OWNER")}>OWNER</li>
+                            <li onClick={() => selectRole("ADMIN")}>ADMIN</li>
                         </ul>
                     )}
                     {errors.role && <p className="error-message">{errors.role}</p>}
                 </div>
+
+                {formData.role === 'ADMIN' && (
+                    <div className="input-box">
+                        <input
+                            type="password"
+                            name="adminSecret"
+                            placeholder="Enter Admin Secret Key"
+                            value={formData.adminSecret}
+                            onChange={handleChange}
+                            required
+                            className={errors.adminSecret ? 'input-error' : ''}
+                        />
+                        {errors.adminSecret && (
+                            <p className="error-message">{errors.adminSecret}</p>
+                        )}
+                        <small className="admin-hint">
+                            (Only for admin registration)
+                        </small>
+                    </div>
+                )}
                 
                 {/* Password Field */}
                 <div className="input-box">
@@ -323,26 +357,27 @@ const Signup = () => {
                     {errors.password && <p className="error-message">{errors.password}</p>}
                 </div>
                 
-                {/* Confirm Password Field */}
-                <div className="input-box">
-                    <input 
-                        type={showConfirm ? "text" : "password"} 
-                        name="confirmPassword"
-                        placeholder="Confirm Password" 
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        className={errors.confirmPassword ? 'input-error' : ''}
-                        required 
-                    />
-                    <span className="icon" onClick={() => setShowConfirm(!showConfirm)}>
-                        {showConfirm ? (
-                            <FaEye className={errors.confirmPassword ? 'icon-error' : ''} />
-                        ) : (
-                            <FaEyeSlash className={errors.confirmPassword ? 'icon-error' : ''} />
+                {formData.role !== 'ADMIN' && (
+                    <div className="input-box">
+                        <input 
+                            type={showConfirm ? "text" : "password"} 
+                            name="confirmPassword"
+                            placeholder="Confirm Password" 
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            className={errors.confirmPassword ? 'input-error' : ''}
+                            required={formData.role !== 'ADMIN'} // Dili required kung admin
+                        />
+                        <span className="icon" onClick={() => setShowConfirm(!showConfirm)}>
+                            {showConfirm ? <FaEye /> : <FaEyeSlash />}
+                        </span>
+                        {errors.confirmPassword && (
+                            <p className="error-message">{errors.confirmPassword}</p>
                         )}
-                    </span>
-                    {errors.confirmPassword && <p className="error-message">{errors.confirmPassword}</p>}
-                </div>
+                    </div>
+                )}
+
+
                 
                 {/* Terms and Conditions */}
                 <div className="tac">
