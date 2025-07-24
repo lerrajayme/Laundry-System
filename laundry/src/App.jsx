@@ -48,7 +48,7 @@ function AppWrapper() {
     // Hide Navbar for dashboard routes
     const hideNavbarOn = ['/customer', '/profile', '/notifications', '/addresscustomer', '/order-history', '/book-service',
       '/laundry-details', '/customer-logout', '/booking-form', '/customer-payment', '/pay-with-cash', '/owner', '/profile-owner', 
-      '/notification-owner', '/owner-logout', '/manage-users', '/manage-orders', '/reports',
+      '/notification-owner', '/owner-logout', '/manage-users', '/manage-orders', '/reports', '/admin',
       '/service-list',
     ];
     const showNavbar = !hideNavbarOn.includes(location.pathname);

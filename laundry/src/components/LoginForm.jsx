@@ -48,11 +48,15 @@ const LoginForm = () => {
         email,
         password
       });
+      
+      console.log("Login response:", response.data);
 
       if (response.data.success) {
         // Navigate based on the role from the response
-        const userRole = response.data.user.role;
+        const userRole = response.data.user.role.toUpperCase();
         
+        console.log("User role:", userRole);
+
             if (userRole === "ADMIN") {
             navigate("/admin"); // Redirect to admin page
           } else if (userRole === "OWNER") {
